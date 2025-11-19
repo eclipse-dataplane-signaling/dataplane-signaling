@@ -431,9 +431,9 @@ paths:
     post:
       tags:
         - Data Plane Registration
-      summary: Register a data plane with a control plane.
+      summary: Register a data plane on the control plane.
       description: |
-        The register endpoint is hosted on the control plane, and may be used to register a data plane with the control plane.
+        The register endpoint is hosted on the control plane, and may be used to register a data plane on the control plane.
       operationId: registerDataplane
       requestBody:
         description: Data plane registration data
@@ -441,14 +441,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataPlaneRegistrationData'
+              $ref: '#/components/schemas/DataPlaneRegistrationMessage'
       responses:
         '200':
           description: Data plane registered successfully
         '400':
           description: Bad Request - invalid input, invalid object state or missing required parameters
 
-  /dataplanes/{dataplaneId}/registration:
+  /dataplanes/{dataplaneId}:
     put:
         tags:
             - Data Plane Registration
@@ -470,7 +470,7 @@ paths:
             content:
               application/json:
                   schema:
-                    $ref: '#/components/schemas/DataPlaneRegistrationData'
+                    $ref: '#/components/schemas/DataPlaneRegistrationMessage'
         responses:
             '200':
               description: Data plane registration updated successfully
@@ -759,7 +759,7 @@ components:
           description: The value of the property
           example: 5up3r53cur3t0k3n
 
-    DataPlaneRegistrationData:
+    DataPlaneRegistrationMessage:
       type: object
       required: [dataplaneId, name, endpoint, transferTypes, authorization]
       properties:
