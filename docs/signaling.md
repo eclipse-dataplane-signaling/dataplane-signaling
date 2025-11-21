@@ -636,9 +636,9 @@ configuration is applied is implementation-specific.
 A [=Control Plane=] implementation MAY support registration through an endpoint. The endpoint is defined as follows:
 
 |                 |                                       |
-| --------------- | ------------------------------------- |
+|-----------------|---------------------------------------|
 | **HTTP Method** | `POST`                                |
-| **URL Path**    | `/dataplanes/registration`            |
+| **URL Path**    | `/dataplanes/register`                |
 | **Request**     | [`DataPlaneRegistrationMessage`]      |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error` |
 
@@ -655,12 +655,12 @@ TODO: Define DataPlaneRegistrationRegistrationMessage, including the `dataplaneI
 If the [=Control Plane=] implementation supports endpoint registration, it MUST support endpoint updates. The endpoint
 update is defined as follows:
 
-|                 |                                         |
-| --------------- | --------------------------------------- |
-| **HTTP Method** | `PUT`                                   |
-| **URL Path**    | `/dataplanes/:dataplaneId/registration` |
-| **Request**     | [`DataPlaneRegistrationMessage`]        |
-| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`   |
+|                 |                                       |
+|-----------------|---------------------------------------|
+| **HTTP Method** | `PUT`                                 |
+| **URL Path**    | `/dataplanes/:dataplaneId`            |
+| **Request**     | [`DataPlaneRegistrationMessage`]      |
+| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error` |
 
 Update semantics are defined as a `replace` operation.
 
@@ -669,11 +669,11 @@ Update semantics are defined as a `replace` operation.
 If the [=Control Plane=] implementation supports endpoint registration, it MUST support endpoint deletion defined as
 follows:
 
-|                 |                                         |
-| --------------- | --------------------------------------- |
-| **HTTP Method** | `DELETE`                                |
-| **URL Path**    | `/dataplanes/:dataplaneId/registration` |
-| **Response**    | `HTTP 204` OR `HTTP 4xx Client Error`   |
+|                 |                                       |
+|-----------------|---------------------------------------|
+| **HTTP Method** | `DELETE`                              |
+| **URL Path**    | `/dataplanes/:dataplaneId`            |
+| **Response**    | `HTTP 204` OR `HTTP 4xx Client Error` |
 
 ### Control Plane Registration
 
