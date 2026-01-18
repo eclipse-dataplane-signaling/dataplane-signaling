@@ -616,20 +616,9 @@ components:
           example: https://example.com/controlplanes/xyz/callback
           format: uri
         transferType:
-<<<<<<< HEAD
           $ref: '#/components/schemas/TransferType'
-        labels:
-          type: array
-        metadata:
-          type: object
-          description: free-form object type used by the control plane to pass flow related info to the data plane
-=======
-          type: string
-          description: The flow transfer type
-          example: com.test.http-PULL
         dataAddress:
           $ref: '#/components/schemas/DataAddress'
->>>>>>> 3d139fe (docs: set transfer type as string)
 
     DataFlowPrepareMessage:
       allOf:
@@ -784,7 +773,7 @@ components:
             type: array
             description: A list of transfer types supported by the data plane
             items:
-              type: string
+              $ref: '#/components/schemas/TransferType'
             example:
               - "com.test.http-pull"
               - "com.test.mqtt-push-com.test.mqtt"
@@ -860,6 +849,12 @@ components:
                 type: string
                 description: The client secret for the authorization profile
                 example: "s3cr3t"
+
+    TransferType:
+      type: string
+      description: The flow transfer type
+      example: com.test.http-pull
+
   requestBodies:
     DataFlowPrepareMessage:
       content:
