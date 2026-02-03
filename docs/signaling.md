@@ -545,7 +545,6 @@ The `completed` request signals to the [=Control Plane=] that the [=Data Flow=] 
 | --------------- | ------------------------------------------- |
 | **HTTP Method** | `POST`                                      |
 | **URL Path**    | `/transfers/:transferId/dataflow/completed` |
-| **Request**     | [`DataFlowCompletedMessage`]                |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`       |
 
 #### Errored
