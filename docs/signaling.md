@@ -559,10 +559,10 @@ NOTE see [Terminated Event propagation](https://github.com/Metaform/dataplane-si
 request does not exist.
 
 |                 |                                           |
-| --------------- | ----------------------------------------- |
+|-----------------|-------------------------------------------|
 | **HTTP Method** | `POST`                                    |
 | **URL Path**    | `/transfers/:transferId/dataflow/errored` |
-| **Request**     | [`DataFlowErroredMessage`]                |
+| **Request**     | [`DataFlowResponseMessage`]               |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`     |
 
 ## Registration
