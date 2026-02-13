@@ -158,19 +158,19 @@ use to push data to the consumer. The complete [=Data Flow=] sequence is detaile
 
 ```mermaid
 sequenceDiagram
-    participant ccp as Consumer<br/>Control Plane
     participant cdp as Consumer<br/>Data Plane
+    participant ccp as Consumer<br/>Control Plane
     participant pcp as Provider<br/>Control Plane
     participant pdp as Provider<br/>Data Plane
     ccp ->> cdp: /prepare
-    cdp ->> ccp: /prepared
-    ccp -->> pcp: TransferRequestMessage (DataAddress)
-    pcp ->> pdp: /start
+    cdp ->> ccp: /prepared + DataAddress
+    ccp -->> pcp: TransferRequestMessage + DataAddress
+    pcp ->> pdp: /start + DataAddress
     pdp ->> pcp: /started
     pcp -->> ccp: TransferStartMessage
-    ccp ->> cdp: /started (+ DataAddress)
+    ccp ->> cdp: /started
     cdp ->> ccp: /started
-    pdp --> cdp: data
+    pdp -->> cdp: data
     pdp ->> pcp: /completed
     pcp -->> ccp: TransferCompletionMessage
     ccp ->> cdp: /completed
@@ -193,8 +193,8 @@ control plan via a start message and can initiate the wire protocol. This sequen
 
 ```mermaid
 sequenceDiagram
-    participant ccp as Consumer<br/>Control Plane
     participant cdp as Consumer<br/>Data Plane
+    participant ccp as Consumer<br/>Control Plane
     participant pcp as Provider<br/>Control Plane
     participant pdp as Provider<br/>Data Plane
 
@@ -204,12 +204,12 @@ sequenceDiagram
     end
 
     ccp -->> pcp: TransferRequestMessage
-    pcp ->> pdp: /start + DataAddress
-    pdp ->> pcp: /started
+    pcp ->> pdp: /start
+    pdp ->> pcp: /started + DataAddress
     pcp -->> ccp: TransferStartMessage + DataAddress
-    ccp ->> cdp: /started
+    ccp ->> cdp: /started + DataAddress
     cdp ->> ccp: /started
-    pdp --> cdp: data
+    pdp -->> cdp: data
     cdp ->> ccp: /completed
     ccp -->> pcp: TransferCompletionMessage
     pcp ->> pdp: /completed
