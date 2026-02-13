@@ -238,15 +238,15 @@ The Data Plane Endpoint is used by the [=Control Plane=] to manage [=Data Flows=
 The `prepare` request signals to the [=Data Plane=] to initialize a [=Data Flow=] and any resources required for data
 transfer. The request results in a state machine transition to PREPARING or PREPARED. If the state machine transitions
 to PREPARING, the [=Data Plane=] MUST return HTTP 202 Accepted with the `Location` header set to the [data flow status
-relative URL](#status) and a message body containing a `DataFlowResponseMessage`. If the state machine transitions to
-PREPARED, the [=Data Plane=] MUST return HTTP 200 OK and a `DataFlowResponseMessage`.
+relative URL](#status) and a message body containing a `DataFlowStatusMessage`. If the state machine transitions to
+PREPARED, the [=Data Plane=] MUST return HTTP 200 OK and a `DataFlowStatusMessage`.
 
 |                 |                                                                                                                                                                               |
 | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **HTTP Method** | `POST`                                                                                                                                                                        |
 | **URL Path**    | `/dataflows/prepare`                                                                                                                                                          |
 | **Request**     | [`DataFlowPrepareMessage`](#dataflowpreparemessage)                                                                                                                           |
-| **Response**    | `HTTP 200` with a [`DataFlowResponseMessage`](#dataflowresponsemessage) OR `HTTP 202` with a [`DataFlowResponseMessage`](#dataflowresponsemessage) OR `HTTP 4xx Client Error` |
+| **Response**    | `HTTP 200` with a [`DataFlowStatusMessage`](#DataFlowStatusMessage) OR `HTTP 202` with a [`DataFlowStatusMessage`](#DataFlowStatusMessage) OR `HTTP 4xx Client Error` |
 
 ##### DataFlowPrepareMessage
 
@@ -287,18 +287,18 @@ The following is a non-normative example of a `DataFlowPrepareMessage`:
 }
 ```
 
-##### DataFlowResponseMessage
+##### DataFlowStatusMessage
 
 |              |                                                                                                                                     |
 |--------------|-------------------------------------------------------------------------------------------------------------------------------------|
-| **Schema**   | [JSON Schema](./schemas/DataFlowResponseMessage.schema.json)                                                                        |
+| **Schema**   | [JSON Schema](./schemas/DataFlowStatusMessage.schema.json)                                                                        |
 | **Required** | - `dataplaneId`: The unique identifier of the data plane.                                                                           |
 |              | - `dataFlowId`: The unique identifier of the data flow.                                                                             |
 |              | - `state`: The current state of the data flow.                                                                                      |
 | **Optional** | - `dataAddress`: An object containing information about where the data can be obtained/provided. See [data address](#data-address). |
 |              | - `error`: A description of any error that occurred during processing.                                                              |
 
-The following is a non-normative example of a `DataFlowResponseMessage`:
+The following is a non-normative example of a `DataFlowStatusMessage`:
 
 ```json
 {
@@ -315,15 +315,15 @@ The following is a non-normative example of a `DataFlowResponseMessage`:
 The `start` request signals to the provider [=Data Plane=] to begin a data transfer. The request results in a state machine
 transition to STARTING or STARTED. If the state machine transitions to STARTING, the [=Data Plane=] MUST return HTTP 202
 Accepted with the `Location` header set to the [data flow status relative URL](#status) and a message body containing a
-`DataFlowResponseMessage`. If the state machine transitions to STARTED, the [=Data Plane=] MUST return HTTP 200 OK and a
-`DataFlowResponseMessage`.
+`DataFlowStatusMessage`. If the state machine transitions to STARTED, the [=Data Plane=] MUST return HTTP 200 OK and a
+`DataFlowStatusMessage`.
 
 |                 |                                                                                                                                                                                |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **HTTP Method** | `POST`                                                                                                                                                                         |
 | **URL Path**    | `/dataflows/start`                                                                                                                                                             |
 | **Request**     | [`DataFlowStartMessage`](#dataflowstartmessage)                                                                                                                                |
-| **Response**    | `HTTP 200` with a [`DataFlowResponseMessage`](#dataflowresponsemessage) OR `HTTP 202` with a [`DataFlowResponseMessage`](#dataflowresponsemessage) OR `HTTP 4xx Client Error`. |
+| **Response**    | `HTTP 200` with a [`DataFlowStatusMessage`](#DataFlowStatusMessage) OR `HTTP 202` with a [`DataFlowStatusMessage`](#DataFlowStatusMessage) OR `HTTP 4xx Client Error`. |
 
 ##### DataFlowStartMessage
 
@@ -523,7 +523,7 @@ The `prepared` request signals to the [=Control Plane=] that the [=Data Flow=] i
 | --------------- | ----------------------------------------------------- |
 | **HTTP Method** | `POST`                                                |
 | **URL Path**    | `/transfers/:transferId/dataflow/prepared`            |
-| **Request**     | [`DataFlowResponseMessage`](#dataflowresponsemessage) |
+| **Request**     | [`DataFlowStatusMessage`](#DataFlowStatusMessage) |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`                 |
 
 #### Started
@@ -534,7 +534,7 @@ The `started` request signals to the [=Control Plane=] that the [=Data Flow=] is
 | --------------- | ----------------------------------------------------- |
 | **HTTP Method** | `POST`                                                |
 | **URL Path**    | `/transfers/:transferId/dataflow/started`             |
-| **Request**     | [`DataFlowResponseMessage`](#dataflowresponsemessage) |
+| **Request**     | [`DataFlowStatusMessage`](#DataFlowStatusMessage) |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`                 |
 
 #### Completed
@@ -562,7 +562,7 @@ request does not exist.
 |-----------------|-------------------------------------------|
 | **HTTP Method** | `POST`                                    |
 | **URL Path**    | `/transfers/:transferId/dataflow/errored` |
-| **Request**     | [`DataFlowResponseMessage`]               |
+| **Request**     | [`DataFlowStatusMessage`]               |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`     |
 
 ## Registration

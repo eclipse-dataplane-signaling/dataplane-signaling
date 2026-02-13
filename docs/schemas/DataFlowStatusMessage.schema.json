@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "DataFlowResponseMessage.json",
-    "title": "DataFlowResponseMessage",
+    "$id": "DataFlowStatusMessage.json",
+    "title": "DataFlowStatusMessage",
     "type": "object",
     "properties": {
         "dataplaneId": {
