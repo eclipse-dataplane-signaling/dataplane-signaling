@@ -18,7 +18,8 @@ jobs:
       - uses: actions/checkout@v6
       - name: copy contexts into public folder
         run: |
-          cp -r docs/schemas public/schemas/
+          mkdir -p public/schemas
+          cp -r docs/schemas public/
       - name: deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
