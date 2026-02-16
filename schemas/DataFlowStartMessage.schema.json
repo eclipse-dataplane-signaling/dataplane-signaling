@@ -4,7 +4,7 @@
     "title": "DataFlowStartMessage",
     "allOf": [
         {
-            "$ref": "DataFlowBaseMessage.schema.json"
+            "$ref": "https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowBaseMessage.schema.json"
         }
     ],
     "properties": {
