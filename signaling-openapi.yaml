@@ -1,4 +1,4 @@
-openapi: 3.0.2
+openapi: 3.1.2
 servers:
   - url: https://example.com/signaling/v1
 info:
@@ -44,7 +44,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DataFlowStatusMessage'
+                $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
               example:
                 dataplaneId: dataplane-64345
                 state: PREPARED
@@ -60,7 +60,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DataFlowStatusMessage'
+                $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
               example:
                 dataplaneId: dataplane-64345
                 state: PREPARING
@@ -73,7 +73,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataFlowPrepareMessage'
+              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowPrepareMessage.schema.json'
 
   /dataflows/{id}/started:
     post:
@@ -109,7 +109,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataFlowStartedNotificationMessage'
+              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStartedNotificationMessage.schema.json'
 
   /dataflows/start:
     post:
@@ -129,7 +129,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataFlowStartMessage'
+              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStartMessage.schema.json'
 
       responses:
         '200':
@@ -137,7 +137,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DataFlowStatusMessage'
+                $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
               example:
                 dataplaneId: dataplane-64345
                 state: STARTED
@@ -164,7 +164,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DataFlowStatusMessage'
+                $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
               example:
                 example:
                   dataplaneId: dataplane-64345
@@ -188,7 +188,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataFlowSuspendMessage'
+              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowSuspendMessage.schema.json'
       parameters:
         - name: id
           in: path
@@ -218,7 +218,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataFlowTerminateMessage'
+              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowTerminateMessage.schema.json'
       parameters:
         - name: id
           in: path
@@ -257,7 +257,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DataFlowStatusResponseMessage'
+                $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusResponseMessage.schema.json'
               example:
                 dataplaneId: dataplane-64345
                 state: PREPARING
@@ -267,7 +267,7 @@ paths:
           description: Not Found - data flow with specified ID does not exist
 
   /dataflows/{id}/completed:
-    get:
+    post:
       tags:
         - Data plane endpoints
       summary: Notify the data plane of a completed transfer
@@ -313,7 +313,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataFlowStatusMessage'
+              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
             example:
               dataplaneId: dataplane-64345
               state: PREPARED
@@ -347,7 +347,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataFlowStatusMessage'
+              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
             example:
               dataplaneId: dataplane-64345
               state: STARTED
@@ -381,7 +381,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataFlowStatusMessage'
+              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
             example:
               dataplaneId: dataplane-64345
               state: COMPLETED
@@ -415,7 +415,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataFlowStatusMessage'
+              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
             example:
               dataplaneId: dataplane-64345
               state: TERMINATED
@@ -450,34 +450,34 @@ paths:
 
   /dataplanes/{dataplaneId}:
     put:
-        tags:
-            - Data Plane Registration
-        summary: Update a data plane registration with replace semantics
-        description: |
-            The registration endpoint is hosted on the control plane, and may be used to update an existing data plane registration, fully replacing the existing one.
-        operationId: updateDataplaneRegistration
-        parameters:
-            - name: dataplaneId
-              in: path
-              required: true
-              description: The unique identifier of the data plane to update
-              schema:
-                  type: string
-                  example: dataplane-64345
-        requestBody:
-            description: Updated data plane registration data
-            required: true
-            content:
-              application/json:
-                  schema:
-                    $ref: '#/components/schemas/DataPlaneRegistrationMessage'
-        responses:
-            '200':
-              description: Data plane registration updated successfully
-            '400':
-              description: Bad Request - invalid input, invalid object state or missing required parameters
-            '404':
-              description: Not Found - data plane with specified ID does not exist
+      tags:
+        - Data Plane Registration
+      summary: Update a data plane registration with replace semantics
+      description: |
+        The registration endpoint is hosted on the control plane, and may be used to update an existing data plane registration, fully replacing the existing one.
+      operationId: updateDataplaneRegistration
+      parameters:
+        - name: dataplaneId
+          in: path
+          required: true
+          description: The unique identifier of the data plane to update
+          schema:
+            type: string
+            example: dataplane-64345
+      requestBody:
+        description: Updated data plane registration data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataPlaneRegistrationMessage'
+      responses:
+        '200':
+          description: Data plane registration updated successfully
+        '400':
+          description: Bad Request - invalid input, invalid object state or missing required parameters
+        '404':
+          description: Not Found - data plane with specified ID does not exist
 
     delete:
       tags:
@@ -578,175 +578,6 @@ externalDocs:
 
 components:
   schemas:
-    DataFlowBaseMessage:
-      type: object
-      required: [ messageId, participantId, counterPartyId, dataspaceContext, processId, agreementId, datasetId, callbackAddress, transferType, labels, metadata ]
-      properties:
-        messageId:
-          type: string
-          description: Unique identifier for the message
-          example: msg-123
-        participantId:
-          type: string
-          description: The participant ID of the sender as specified in the Dataspace Protocol
-          example: did:web:some-company.com:participants:9cc38260-2644-4f76-8da3-3df675d506a2
-        counterPartyId:
-          type: string
-          description: The participant ID of the counterparty as specified in the Dataspace Protocol
-          example: did:web:other-company.com:participants:fc639528-1ece-4164-a49c-a84b59ae18b2
-        dataspaceContext:
-          type: string
-          description: An identifier for the dataspace context when the data plane is used in multiple data spaces.
-          example: some-dataspace-context-123
-        processId:
-          type: string
-          description: The transfer process ID as assigned by the control plane for correlation
-          example: 545fc6b6-7b1b-47ca-86f7-9ac43c480de6
-        agreementId:
-          type: string
-          description: The contract agreement ID that was negotiated by the control plane
-          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-        datasetId:
-          type: string
-          description: The ID of the dataset in the DCAT Catalog which is to be transferred
-          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-        callbackAddress:
-          type: string
-          description: The callback address URL of the control plane where it expects status updates.
-          example: https://example.com/controlplanes/xyz/callback
-          format: uri
-        transferType:
-          $ref: '#/components/schemas/TransferType'
-        dataAddress:
-          $ref: '#/components/schemas/DataAddress'
-
-    DataFlowPrepareMessage:
-      allOf:
-        - $ref: '#/components/schemas/DataFlowBaseMessage'
-
-    DataFlowStartMessage:
-      allOf:
-        - $ref: '#/components/schemas/DataFlowBaseMessage'
-        - type: object
-          required: [ dataFlowId ]
-      properties:
-        dataAddress:
-          $ref: '#/components/schemas/DataAddress'
-
-    DataFlowStartedNotificationMessage:
-      type: object
-      properties:
-        dataAddress:
-          $ref: '#/components/schemas/DataAddress'
-
-    DataFlowSuspendMessage:
-      type: object
-      properties:
-        reason:
-          type: string
-          description: An arbitrary string indicating the reason for suspending the data flow.
-          example: "Suspending due to maintenance window."
-
-    DataFlowTerminateMessage:
-      type: object
-      properties:
-        reason:
-          type: string
-          description: An arbitrary string indicating the reason for terminating the data flow.
-          example: "Data source permanently offline."
-
-    DataFlowStatusMessage:
-      type: object
-      required: [ dataplaneId, state ]
-      properties:
-        dataplaneId:
-          type: string
-          description: The unique identifier of the data plane
-          example: dataplane-64345
-        dataFlowId:
-          type: string
-          description: The unique identifier of the data flow
-          example: dataFlow-71635
-        state:
-          type: string
-          description: The state of the data flow. Only PREPARING and PREPARED are valid in the response to a prepare request.
-          enum: [ UNINITIALIZED, PREPARING, PREPARED, STARTING, STARTED, COMPLETED, SUSPENDED, TERMINATED ]
-          example: PREPARED
-        dataAddress:
-          $ref: '#/components/schemas/DataAddress'
-        error:
-          type: string
-          description: An error message, if any error occurred during the preparation of the data flow.
-
-    DataFlowStatusResponseMessage:
-      type: object
-      required: [ dataFlowId, state ]
-      properties:
-        dataFlowId:
-          type: string
-          description: The unique identifier of the data flow
-          example: DataFlow-64345
-        state:
-          type: string
-          description: The current state of the data flow.
-          enum: [ UNINITIALIZED, PREPARING, PREPARED, STARTING, STARTED, COMPLETED, SUSPENDED, TERMINATED ]
-
-    DataAddress:
-      type: object
-      required:
-        - type
-        - endpointType
-        - endpoint
-        - endpointProperties
-      properties:
-        '@type':
-          type: string
-          description: The type of data address
-          example: DataAddress
-        endpointType:
-          type: string
-          description: the type of endpoint, indicating the protocol to be used
-          example: https://23id.org.idsa/v4.1/HTTP
-        endpoint:
-          type: string
-          description: The network location of the endpoint
-          example: https://example.com/api/data
-          format: uri
-        endpointProperties:
-          type: array
-          description: Additional properties for the endpoint
-          items:
-            $ref: '#/components/schemas/EndpointProperty'
-          example:
-            '@type': DataAddress
-            endpointType: https://w3.org/idsa/v4.1/HTTP
-            endpoint: https://example.com/api/data
-            endpointProperties:
-              - '@type': EndpointProperty
-                name: authorization
-                value: 5up3r53cur3t0k3n
-              - '@type': EndpointProperty
-                name: authType
-                value: bearer
-
-    EndpointProperty:
-      type: object
-      required:
-        - '@type'
-        - name
-        - value
-      properties:
-        '@type':
-          type: string
-          default: EndpointProperty
-        name:
-          type: string
-          description: The name of the property
-          example: authorization
-        value:
-          type: string
-          description: The value of the property
-          example: 5up3r53cur3t0k3n
 
     DataPlaneRegistrationMessage:
       type: object
@@ -757,26 +588,26 @@ components:
           description: The unique identifier of the data plane
           example: dataplane-64345
         name:
-            type: string
-            description: A human-readable name for the data plane
-            example: My Data Plane
+          type: string
+          description: A human-readable name for the data plane
+          example: My Data Plane
         description:
-            type: string
-            description: A human-readable description of the data plane
-            example: This data plane is responsible for handling data transfers for project X.
+          type: string
+          description: A human-readable description of the data plane
+          example: This data plane is responsible for handling data transfers for project X.
         endpoint:
-            type: string
-            description: The base URL of the data plane's Signaling API endpoint
-            example: https://dataplane.example.com/api/v1/signaling
-            format: uri
+          type: string
+          description: The base URL of the data plane's Signaling API endpoint
+          example: https://dataplane.example.com/api/v1/signaling
+          format: uri
         transferTypes:
-            type: array
-            description: A list of transfer types supported by the data plane
-            items:
-              $ref: '#/components/schemas/TransferType'
-            example:
-              - "com.test.http-pull"
-              - "com.test.mqtt-push-com.test.mqtt"
+          type: array
+          description: A list of transfer types supported by the data plane
+          items:
+            $ref: '#/components/schemas/TransferType'
+          example:
+            - "com.test.http-pull"
+            - "com.test.mqtt-push-com.test.mqtt"
         authorization:
           type: array
           description: an array of one or more authorization objects
@@ -855,13 +686,6 @@ components:
       description: The flow transfer type
       example: com.test.http-pull
 
-  requestBodies:
-    DataFlowPrepareMessage:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DataFlowPrepareMessage'
-      description: Message to let the data plane begin with preparations for a data transfer
   securitySchemes:
     petstore_auth:
       type: oauth2
