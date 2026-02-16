@@ -4,7 +4,7 @@
     "title": "DataFlowPrepareMessage",
     "allOf": [
         {
-            "$ref": "DataFlowBaseMessage.json"
+            "$ref": "DataFlowBaseMessage.schema.json"
         }
     ]
 }

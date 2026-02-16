@@ -4,7 +4,7 @@
     "title": "DataFlowStartMessage",
     "allOf": [
         {
-            "$ref": "DataFlowBaseMessage.json"
+            "$ref": "DataFlowBaseMessage.schema.json"
         }
     ],
     "properties": {
