@@ -5,7 +5,7 @@
     "type": "object",
     "properties": {
         "dataAddress": {
-            "type": "object"
+            "$ref": "https://w3id.org/dspace/2025/1/transfer/data-address-schema.json"
         }
     }
 }
