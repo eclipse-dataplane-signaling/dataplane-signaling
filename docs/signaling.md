@@ -198,10 +198,8 @@ sequenceDiagram
     participant pcp as Provider<br/>Control Plane
     participant pdp as Provider<br/>Data Plane
 
-    rect rgb(223, 223, 225)
-        ccp ->> cdp: Prepare
-        cdp ->> ccp: Prepared
-    end
+    ccp ->> cdp: Prepare
+    cdp ->> ccp: Prepared
 
     ccp -->> pcp: TransferRequestMessage
     pcp ->> pdp: /start
@@ -216,9 +214,6 @@ sequenceDiagram
 ```
 
 DSP messages are shown with a dotted line.
-
-Note that the consumer `prepare` request (highlighted in gray) is optional for the pull transfer type, and MAY be
-omitted as an optimization by the consumer control plane.
 
 ## Data Flow API
 
