@@ -7,7 +7,7 @@
         "state": {
             "type": "string",
             "enum": [
-                "UNINITIALIZED",
+                "INITIALIZED",
                 "PREPARING",
                 "PREPARED",
                 "STARTING",
