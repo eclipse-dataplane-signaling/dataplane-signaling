@@ -81,9 +81,9 @@ Note: Any state can transition to `TERMINATED` (Note shown for simplicity)
 [=Data Flow=] states are:
 
 - **INITIALIZED**: The state machine has been initialized.
-- **PREPARING**: A consumer or provider data plane are in the process of preparing to receive or send data using a wire
-  protocol. This process may involve provisioning resources such as access tokens or preparing data.
-- **PREPARED**: The consumer or provider is ready to receive or send data.
+- **PREPARING**: A consumer data plane is in the process of preparing to receive or send data using a wire protocol.
+  This process may involve provisioning resources such as access tokens or preparing data.
+- **PREPARED**: The consumer is ready to receive or send data.
 - **STARTING**: The consumer or provider is starting the wire protocol.
 - **STARTED**: The consumer or provider has started sending data using the wire protocol.
 - **SUSPENDED**: The data send operation is suspended.
@@ -151,7 +151,7 @@ following is a non-normative example of a `DataAddress`:
 
 ### Push Protocol Messaging
 
-A push transfer type uses a [=Wire rotocol=] that allows a provider to send data to a consumer-supplied endpoint. This
+A push transfer type uses a [=Wire protocol=] that allows a provider to send data to a consumer-supplied endpoint. This
 requires the consumer control plane to issue a `prepare` request to the [=Data Plane=]. When the [=Data Plane=]
 transitions to PREPARED, it will respond to the control plane with the `DataAddress` the provider [=Data Plane=] will
 use to push data to the consumer. The complete [=Data Flow=] sequence is detailed below:
@@ -198,10 +198,8 @@ sequenceDiagram
     participant pcp as Provider<br/>Control Plane
     participant pdp as Provider<br/>Data Plane
 
-    rect rgb(223, 223, 225)
-        ccp ->> cdp: Prepare
-        cdp ->> ccp: Prepared
-    end
+    ccp ->> cdp: Prepare
+    cdp ->> ccp: Prepared
 
     ccp -->> pcp: TransferRequestMessage
     pcp ->> pdp: /start
@@ -216,9 +214,6 @@ sequenceDiagram
 ```
 
 DSP messages are shown with a dotted line.
-
-Note that the consumer `prepare` request (highlighted in gray) is optional for the pull transfer type, and MAY be
-omitted as an optimization by the consumer control plane.
 
 ## Data Flow API
 
@@ -843,6 +838,3 @@ need to publish a Wire Protocol Signaling Specification. Define what the specifi
 
 ### Wire Protocol Signaling Specification Requirements
 
-## Open Issues
-
-https://github.com/Metaform/dataplane-signaling/issues
