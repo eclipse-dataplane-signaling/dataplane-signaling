@@ -602,8 +602,6 @@ The following is a non-normative example of a Data Plane registration data objec
 ```json
 {
   "dataplaneId": "7d6fda82-98b6-4738-a874-1f2c003a79ff",
-  "name": "My Data Plane",
-  "description": "My Data Plane Description",
   "endpoint": "https://example.com/signaling",
   "transferTypes": ["com.test.http-PULL"],
   "authorization": [
@@ -693,8 +691,6 @@ The following is a non-normative example of a Control Plane registration data ob
 ```json
 {
   "dataplaneId": "bcf2d204-03bc-4354-8e92-b15b68d3c358",
-  "name": "My Control Plane",
-  "description": "My Control Plane Description",
   "endpoint": "https://example.com/signaling",
   "authorization": [
     {

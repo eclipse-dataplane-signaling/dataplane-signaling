@@ -372,14 +372,6 @@ components:
           type: string
           description: The unique identifier of the control plane
           example: controlplane-64345
-        name:
-          type: string
-          description: A human-readable name for the control plane
-          example: My Control Plane
-        description:
-          type: string
-          description: A human-readable description of the control plane
-          example: This control plane is the main DSP hub for company X..
         endpoint:
           type: string
           description: The base URL of the control plane's Signaling API endpoint
