@@ -3,8 +3,9 @@ servers:
   - url: https://example.com/signaling/v1
 info:
   description: |-
-    This specification contains all mandatory and optional endpoints for the [Dataplane Signaling Protocol (DPS)](https://github.com/Metaform/dataplane-signaling/blob/main/docs/signaling.md).
-    It is based on OpenAPI 3.0.2 and uses JSON Schema for data modeling.
+    This specification contains all mandatory and optional endpoints for the [Dataplane Signaling Protocol (DPS)](https://github.com/eclipse-dataplane-signaling/dataplane-signaling/blob/main/docs/signaling.md)
+    to be implemented by the data-plane.
+    It is based on OpenAPI 3.1.2 and uses JSON Schema for data modeling.
   version: 0.0.1
   title: Dataplane Signaling Protocol DPS
   license:
@@ -15,14 +16,7 @@ tags:
     description: Endpoints that must be implemented by the data plane
     externalDocs:
       description: Find out more
-      url: 'https://github.com/Metaform/dataplane-signaling/blob/main/docs/signaling.md#data-plane-endpoint'
-  - name: Control plane endpoints
-    description: All endpoints that must be implemented by the control plane
-    externalDocs:
-      description: Find out more about our store
-      url: 'https://github.com/Metaform/dataplane-signaling/blob/main/docs/signaling.md#control-plane-endpoint'
-  - name: Data Plane Registration
-    description: Data plane registration endpoints, to be implemented by the control plane. Note that these endpoints are OPTIONAL, but either NONE or ALL must be implemented.
+      url: 'https://github.com/eclipse-dataplane-signaling/dataplane-signaling/blob/main/docs/signaling.md#data-plane-endpoint'
   - name: Control Plane Registration
     description: Control plane registration endpoints, to be implemented by the data plane. Note that these endpoints are OPTIONAL, but either NONE or ALL must be implemented.
 paths:
@@ -290,215 +284,6 @@ paths:
         '404':
           description: Not Found - data flow with specified ID does not exist
 
-
-  /transfers/{transferId}/dataflow/prepared:
-    post:
-      tags:
-        - Control plane endpoints
-      summary: Signals the PREPARED state
-      description: |
-        The prepared request signals to the control plane that the data plane is in the PREPARED state and ready to start a data transfer
-      operationId: signalPrepared
-      parameters:
-        - name: transferId
-          in: path
-          required: true
-          description: the unique identifier of the data transfer (= data flow)
-          schema:
-            type: string
-            example: 93a78371-7891-495e-afb5-9b11ac6b1e94
-      requestBody:
-        description: DataFlow prepared notification
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
-            example:
-              dataplaneId: dataplane-64345
-              state: PREPARED
-      responses:
-        '200':
-          description: Notification received successfully
-        '400':
-          description: Bad Request - invalid input, invalid object state or missing required parameters
-        '404':
-          description: Not Found - transfer process with specified ID does not exist
-
-  /transfers/{transferId}/dataflow/started:
-    post:
-      tags:
-        - Control plane endpoints
-      summary: Signals the STARTED state
-      description: |
-        The started request signals to the control plane that the data plane is in the STARTED state and clients can start transmitting data
-      operationId: signalStarted
-      parameters:
-        - name: transferId
-          in: path
-          required: true
-          description: the unique identifier of the data transfer (= data flow)
-          schema:
-            type: string
-            example: 93a78371-7891-495e-afb5-9b11ac6b1e94
-      requestBody:
-        description: DataFlow started notification
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
-            example:
-              dataplaneId: dataplane-64345
-              state: STARTED
-      responses:
-        '200':
-          description: Notification received successfully
-        '400':
-          description: Bad Request - invalid input, invalid object state or missing required parameters
-        '404':
-          description: Not Found - transfer process with specified ID does not exist
-
-  /transfers/{transferId}/dataflow/completed:
-    post:
-      tags:
-        - Control plane endpoints
-      summary: Signals the COMPLETED state
-      description: |
-        The completed request signals to the control plane that the data plane is in the COMPLETED state and all transmissions have finished normally.
-      operationId: signalCompleted
-      parameters:
-        - name: transferId
-          in: path
-          required: true
-          description: the unique identifier of the data transfer (= data flow)
-          schema:
-            type: string
-            example: 93a78371-7891-495e-afb5-9b11ac6b1e94
-      requestBody:
-        description: DataFlow completed notification
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
-            example:
-              dataplaneId: dataplane-64345
-              state: COMPLETED
-      responses:
-        '200':
-          description: Notification received successfully
-        '400':
-          description: Bad Request - invalid input, invalid object state or missing required parameters
-        '404':
-          description: Not Found - transfer process with specified ID does not exist
-
-  /transfers/{transferId}/dataflow/errored:
-    post:
-      tags:
-        - Control plane endpoints
-      summary: Signals the TERMINATED state
-      description: |
-        The prepared request signals to the control plane that the data plane is in the TERMINATED state which indicates abnormal termination.
-      operationId: signalTerminated
-      parameters:
-        - name: transferId
-          in: path
-          required: true
-          description: the unique identifier of the data transfer (= data flow)
-          schema:
-            type: string
-            example: 93a78371-7891-495e-afb5-9b11ac6b1e94
-      requestBody:
-        description: DataFlow terminated notification
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
-            example:
-              dataplaneId: dataplane-64345
-              state: TERMINATED
-      responses:
-        '200':
-          description: Notification received successfully
-        '400':
-          description: Bad Request - invalid input, invalid object state or missing required parameters
-        '404':
-          description: Not Found - transfer process with specified ID does not exist
-
-  /dataplanes/register:
-    post:
-      tags:
-        - Data Plane Registration
-      summary: Register a data plane on the control plane.
-      description: |
-        The register endpoint is hosted on the control plane, and may be used to register a data plane on the control plane.
-      operationId: registerDataplane
-      requestBody:
-        description: Data plane registration data
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DataPlaneRegistrationMessage'
-      responses:
-        '200':
-          description: Data plane registered successfully
-        '400':
-          description: Bad Request - invalid input, invalid object state or missing required parameters
-
-  /dataplanes/{dataplaneId}:
-    put:
-      tags:
-        - Data Plane Registration
-      summary: Update a data plane registration with replace semantics
-      description: |
-        The registration endpoint is hosted on the control plane, and may be used to update an existing data plane registration, fully replacing the existing one.
-      operationId: updateDataplaneRegistration
-      parameters:
-        - name: dataplaneId
-          in: path
-          required: true
-          description: The unique identifier of the data plane to update
-          schema:
-            type: string
-            example: dataplane-64345
-      requestBody:
-        description: Updated data plane registration data
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DataPlaneRegistrationMessage'
-      responses:
-        '200':
-          description: Data plane registration updated successfully
-        '400':
-          description: Bad Request - invalid input, invalid object state or missing required parameters
-        '404':
-          description: Not Found - data plane with specified ID does not exist
-
-    delete:
-      tags:
-        - Data Plane Registration
-      summary: Delete a data plane registration
-      operationId: deleteDataplaneRegistration
-      parameters:
-        - name: dataplaneId
-          in: path
-          required: true
-          description: The unique identifier of the data plane to delete
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Data plane registration deleted successfully
-        '400':
-          description: Bad Request - invalid input, invalid object state or missing required parameters
-        '404':
-          description: Not Found - data plane with specified ID does not exist
-
   /controlplanes/register:
     post:
       tags:
@@ -574,69 +359,10 @@ paths:
 
 externalDocs:
   description: Find out more about Dataplane Signaling Protocol
-  url: 'https://github.com/Metaform/dataplane-signaling/blob/main/docs/signaling.md'
+  url: 'https://github.com/eclipse-dataplane-signaling/dataplane-signaling/blob/main/docs/signaling.md'
 
 components:
   schemas:
-
-    DataPlaneRegistrationMessage:
-      type: object
-      required: [dataplaneId, name, endpoint, transferTypes, authorization]
-      properties:
-        dataplaneId:
-          type: string
-          description: The unique identifier of the data plane
-          example: dataplane-64345
-        name:
-          type: string
-          description: A human-readable name for the data plane
-          example: My Data Plane
-        description:
-          type: string
-          description: A human-readable description of the data plane
-          example: This data plane is responsible for handling data transfers for project X.
-        endpoint:
-          type: string
-          description: The base URL of the data plane's Signaling API endpoint
-          example: https://dataplane.example.com/api/v1/signaling
-          format: uri
-        transferTypes:
-          type: array
-          description: A list of transfer types supported by the data plane
-          items:
-            $ref: '#/components/schemas/TransferType'
-          example:
-            - "com.test.http-pull"
-            - "com.test.mqtt-push-com.test.mqtt"
-        authorization:
-          type: array
-          description: an array of one or more authorization objects
-          items:
-            properties:
-              type:
-                type: string
-                description: The authorization profile
-                example: "oauth2_client_credentials"
-              tokenEndpoint:
-                type: string
-                description: The token endpoint to be used for obtaining access tokens
-                example: "https://auth.example.com/oauth2/token"
-              clientId:
-                type: string
-                description: The client ID for the authorization profile
-                example: "123456789"
-              clientSecret:
-                type: string
-                description: The client secret for the authorization profile
-                example: "s3cr3t"
-        labels:
-          type: array
-          description: an array of one of more strings corresponding to labels associated with the data plane
-          items:
-            type: string
-          example:
-            - "label1"
-            - "label2"
 
     ControlPlaneRegistrationData:
       type: object

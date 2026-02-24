@@ -555,7 +555,7 @@ non-recoverable error at the [=Wire Protocol=] layer.
 Note that only terminal, non-recoverable errors should be reported to the [=Control Plane=]. Transient errors should be
 handled by the [=Data Plane=].
 
-NOTE see [Terminated Event propagation](https://github.com/Metaform/dataplane-signaling/issues/1) for why a `terminated`
+NOTE see [Terminated Event propagation](https://github.com/eclipse-dataplane-signaling/dataplane-signaling/issues/1) for why a `terminated`
 request does not exist.
 
 |                 |                                           |
