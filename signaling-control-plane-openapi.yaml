@@ -245,14 +245,6 @@ components:
           type: string
           description: The unique identifier of the data plane
           example: dataplane-64345
-        name:
-          type: string
-          description: A human-readable name for the data plane
-          example: My Data Plane
-        description:
-          type: string
-          description: A human-readable description of the data plane
-          example: This data plane is responsible for handling data transfers for project X.
         endpoint:
           type: string
           description: The base URL of the data plane's Signaling API endpoint
