@@ -585,14 +585,15 @@ example, a registration may be per deployment or per participant in a multi-part
 
 Data Plane registration is the process where a [=Data Plane=] is registered with the [=Control Plane=].
 
-#### The Data Plane Registration Type
+#### The Data Plane Registration Message
 
-The data plane registration object contains the following properties:
+The data plane registration message object contains the following properties:
 
 |              |                                                                                                     |
-| ------------ | --------------------------------------------------------------------------------------------------- |
-| **Schema**   | [JSON Schema]()                                                                                     |
-| **Required** | - `endpoint`: The data plane signaling endpoint.                                                    |
+|--------------|-----------------------------------------------------------------------------------------------------|
+| **Schema**   | [JSON Schema](./schemas/DataPlaneRegistrationMessage.schema.json)                                   |
+| **Required** | - `dataplaneId`: the data plane id                                                                  |
+|              | - `endpoint`: The data plane signaling endpoint.                                                    |
 |              | - `transferTypes`: An array of one or more strings corresponding to supported transfer types.       |
 | **Optional** | - `authorization`: an array of one or more authorization objects .                                  |
 |              | - `labels`: an array of one or more strings corresponding to labels associated with the data plane. |
@@ -680,17 +681,17 @@ Control Plane registration is the process where a [=Control Plane=] is registere
 
 The control plane registration object contains the following properties:
 
-|              |                                                                    |
-| ------------ | ------------------------------------------------------------------ |
-| **Schema**   | [JSON Schema](./resources/TBD)                                     |
-| **Required** | - `endpoint`: The control plane signaling endpoint.                |
-| **Optional** | - `authorization`: an array of one or more authorization objects . |
+|              |                                                                      |
+|--------------|----------------------------------------------------------------------|
+| **Schema**   | [JSON Schema](./schemas/ControlPlaneRegistrationMessage.schema.json) |
+| **Required** | - `controlplaneId`: the control plane id                             |
+| **Optional** | - `authorization`: an array of one or more authorization objects .   |
 
 The following is a non-normative example of a Control Plane registration data object:
 
 ```json
 {
-  "dataplaneId": "bcf2d204-03bc-4354-8e92-b15b68d3c358",
+  "controlplaneId": "bcf2d204-03bc-4354-8e92-b15b68d3c358",
   "endpoint": "https://example.com/signaling",
   "authorization": [
     {
