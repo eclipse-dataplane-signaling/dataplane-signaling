@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "AuthorizationEntry",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "The authorization profile",
+      "examples": ["oauth2_client_credentials"]
+    },
+    "tokenEndpoint": {
+      "type": "string",
+      "description": "The token endpoint to be used for obtaining access tokens",
+      "examples": ["https://auth.example.com/oauth2/token"]
+    },
+    "clientId": {
+      "type": "string",
+      "description": "The client ID for the authorization profile",
+      "examples": ["123456789"]
+    },
+    "clientSecret": {
+      "type": "string",
+      "description": "The client secret for the authorization profile",
+      "examples": ["s3cr3t"]
+    }
+  }
+}
