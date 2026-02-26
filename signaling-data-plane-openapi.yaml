@@ -298,7 +298,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ControlPlaneRegistrationData'
+              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/ControlPlaneRegistrationMessage.schema.json'
       responses:
         '200':
           description: Control plane registered successfully
@@ -327,7 +327,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ControlPlaneRegistrationData'
+              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/ControlPlaneRegistrationMessage.schema.json'
       responses:
         '200':
           description: Control plane registration updated successfully
@@ -360,60 +360,3 @@ paths:
 externalDocs:
   description: Find out more about Dataplane Signaling Protocol
   url: 'https://github.com/eclipse-dataplane-signaling/dataplane-signaling/blob/main/docs/signaling.md'
-
-components:
-  schemas:
-
-    ControlPlaneRegistrationData:
-      type: object
-      required: [controlplaneId,name,endpoint,authorization]
-      properties:
-        controlplaneId:
-          type: string
-          description: The unique identifier of the control plane
-          example: controlplane-64345
-        endpoint:
-          type: string
-          description: The base URL of the control plane's Signaling API endpoint
-          example: https://dataplane.example.com/api/v1/signaling
-          format: uri
-        authorization:
-          type: array
-          description: an array of one or more authorization objects
-          items:
-            properties:
-              type:
-                type: string
-                description: The authorization profile
-                example: "oauth2_client_credentials"
-              tokenEndpoint:
-                type: string
-                description: The token endpoint to be used for obtaining access tokens
-                example: "https://auth.example.com/oauth2/token"
-              clientId:
-                type: string
-                description: The client ID for the authorization profile
-                example: "123456789"
-              clientSecret:
-                type: string
-                description: The client secret for the authorization profile
-                example: "s3cr3t"
-
-    TransferType:
-      type: string
-      description: The flow transfer type
-      example: com.test.http-pull
-
-  securitySchemes:
-    petstore_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: 'https://petstore.swagger.io/oauth/authorize'
-          scopes:
-            'write:pets': modify pets in your account
-            'read:pets': read your pets
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
