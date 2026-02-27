@@ -43,7 +43,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
+              $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
             example:
               dataplaneId: dataplane-64345
               state: PREPARED
@@ -77,7 +77,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
+              $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
             example:
               dataplaneId: dataplane-64345
               state: STARTED
@@ -111,7 +111,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
+              $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
             example:
               dataplaneId: dataplane-64345
               state: COMPLETED
@@ -145,7 +145,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataFlowStatusMessage.schema.json'
+              $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
             example:
               dataplaneId: dataplane-64345
               state: TERMINATED
@@ -171,7 +171,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataPlaneRegistrationMessage.schema.json'
+              $ref: 'https://w3id.org/dspace-sig/v1.0/DataPlaneRegistrationMessage.schema.json'
       responses:
         '200':
           description: Data plane registered successfully
@@ -200,7 +200,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'https://eclipse-dataplane-signaling.github.io/dataplane-signaling/schemas/DataPlaneRegistrationMessage.schema.json'
+              $ref: 'https://w3id.org/dspace-sig/v1.0/DataPlaneRegistrationMessage.schema.json'
       responses:
         '200':
           description: Data plane registration updated successfully
