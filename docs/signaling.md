@@ -557,7 +557,7 @@ request does not exist.
 |-----------------|-------------------------------------------|
 | **HTTP Method** | `POST`                                    |
 | **URL Path**    | `/transfers/:transferId/dataflow/errored` |
-| **Request**     | [`DataFlowStatusMessage`]               |
+| **Request**     | [`DataFlowStatusMessage`]                 |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`     |
 
 ## Registration
@@ -624,38 +624,24 @@ contain additional properties specific to the profile.
 A [=Control Plane=] implementation MAY support registration through configuration. In this scenario, the way
 configuration is applied is implementation-specific.
 
-#### Endpoint Registration
+#### Registration and update endpoint
 
 A [=Control Plane=] implementation MAY support registration through an endpoint. The endpoint is defined as follows:
 
 |                 |                                       |
 |-----------------|---------------------------------------|
-| **HTTP Method** | `POST`                                |
-| **URL Path**    | `/dataplanes/register`                |
+| **HTTP Method** | `PUT`                                 |
+| **URL Path**    | `/dataplanes`                         |
 | **Request**     | [`DataPlaneRegistrationMessage`]      |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error` |
 
-The `DataPlaneRegistrationMessage` adheres to the [Registration type](#the-data-plane-registration-type) structure. The
+The `DataPlaneRegistrationMessage` adheres to the [Registration type](#the-data-plane-registration-message) structure. The
 endpoint MAY require an authorization mechanism such as OAuth 2.0 or API Key. This is implementation-specific.
 
 Note that the endpoint is relative and may include additional context information such as a sub-path that indicates a
-participant ID the registration applies to.
+participant ID the registration applies to or the API version.
 
-TODO: Define DataPlaneRegistrationRegistrationMessage, including the `dataplaneId` property.
-
-#### Endpoint Update
-
-If the [=Control Plane=] implementation supports endpoint registration, it MUST support endpoint updates. The endpoint
-update is defined as follows:
-
-|                 |                                       |
-|-----------------|---------------------------------------|
-| **HTTP Method** | `PUT`                                 |
-| **URL Path**    | `/dataplanes/:dataplaneId`            |
-| **Request**     | [`DataPlaneRegistrationMessage`]      |
-| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error` |
-
-Update semantics are defined as a `replace` operation.
+Subsequent calls of this endpoint with the same `dataplaneId` will update the stored Data-Plane.
 
 ##### Deletion
 
@@ -711,44 +697,30 @@ is applied is implementation-specific.
 A [=Data Plane=] implementation MAY support registration through an endpoint. The endpoint is defined as follows:
 
 |                 |                                       |
-| --------------- | ------------------------------------- |
-| **HTTP Method** | `POST`                                |
-| **URL Path**    | `/controlplanes/registration`         |
+|-----------------|---------------------------------------|
+| **HTTP Method** | `PUT`                                 |
+| **URL Path**    | `/controlplanes`                      |
 | **Request**     | [`ControlPlaneRegistrationMessage`]   |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error` |
 
-The `ControlPlaneRegistrationMessage` adheres to the [Registration type](#the-registration-type) structure. The endpoint
-MAY require an authorization mechanism such as OAuth 2.0 or API Key. This is implementation-specific.
+The `ControlPlaneRegistrationMessage` adheres to the [Registration type](#the-control-plane-registration-type) structure.
+The endpoint MAY require an authorization mechanism such as OAuth 2.0 or API Key. This is implementation-specific.
 
 Note that the endpoint is relative and may include additional context information such as a sub-path that indicates a
 participant ID the registration applies to.
 
-TODO: Define DataPlaneRegistrationRegistrationMessage, including the `dataplaneId` property.
-
-#### Endpoint Update
-
-If the [=Data Plane=] implementation supports endpoint registration, it MUST support endpoint updates. The endpoint
-update is defined as follows:
-
-|                 |                                               |
-| --------------- | --------------------------------------------- |
-| **HTTP Method** | `PUT`                                         |
-| **URL Path**    | `/controlplanes/:controlplaneId/registration` |
-| **Request**     | [`ControlPlaneRegistrationMessage`]           |
-| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`         |
-
-Update semantics are defined as a `replace` operation.
+Subsequent calls of this endpoint with the same `controlplaneId` will update the stored Control-Plane.
 
 ##### Deletion
 
 If the [=Data Plane=] implementation supports endpoint registration, it MUST support endpoint deletion defined as
 follows:
 
-|                 |                                               |
-| --------------- | --------------------------------------------- |
-| **HTTP Method** | `DELETE`                                      |
-| **URL Path**    | `/controlplanes/:controlplaneId/registration` |
-| **Response**    | `HTTP 204` OR `HTTP 4xx Client Error`         |
+|                 |                                       |
+|-----------------|---------------------------------------|
+| **HTTP Method** | `DELETE`                              |
+| **URL Path**    | `/controlplanes/:controlplaneId`      |
+| **Response**    | `HTTP 204` OR `HTTP 4xx Client Error` |
 
 ### Authorization Profiles
 
