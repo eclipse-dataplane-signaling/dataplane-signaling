@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "DataFlowResumeMessage",
+    "type": "object",
+    "properties": {
+        "messageId": {
+            "type": "string",
+            "description": "Unique identifier for the message"
+        },
+        "processId": {
+            "type": "string",
+            "description": "Associated process identifier. This should be the transfer process ID."
+        },
+        "dataAddress": {
+            "$ref": "https://w3id.org/dspace/2025/1/transfer/data-address-schema.json"
+        }
+    },
+    "required": [
+        "messageId",
+        "processId"
+    ]
+}

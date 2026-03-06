@@ -215,6 +215,85 @@ sequenceDiagram
 
 DSP messages are shown with a dotted line.
 
+### Data Flow Suspension/Resumption
+
+A `STARTED` Data Flow can at any point be suspended to then be resumed at a certain point.
+While a Data Flow is in the `SUSPENDED` state there will be no data flowing between the two parties.
+The `resume` signal will eventually be triggered by the same party who called `suspend`.
+
+Here are the flow sequence diagrams that cover the different flow types (PUSH/PULL) and the originator of the suspension
+(Provider/Consumer):
+
+#### Provider Push - Provider Suspend/Start
+
+```mermaid
+sequenceDiagram                 
+      participant CDP as Consumer<br/>Data Plane             
+      participant CCP as Consumer<br/>Control Plane             
+      participant PCP as Provider<br/>Control Plane             
+      participant PDP as Provider<br/>Data Plane             
+      
+      PCP->>PDP: DataFlowSuspendMessage
+      PCP-->>CCP: TransferSuspensionMessage (DSP)
+      CCP->>CDP: DataFlowSuspendMessage 
+      PCP-->>CCP: TransferStartMessage (DSP)  
+      CCP->>CDP: DataFlowResumeMessage  
+      CCP-->>PCP: TransferStartMessage + DataAddress (DSP+)
+      PCP->>PDP: DataFlowResumeMessage + DataAddress 
+```
+
+
+#### Provider Push - Consumer Suspend/Start
+
+```mermaid
+sequenceDiagram                 
+      participant CDP as Consumer<br/>Data Plane             
+      participant CCP as Consumer<br/>Control Plane             
+      participant PCP as Provider<br/>Control Plane             
+      participant PDP as Provider<br/>Data Plane             
+
+      CCP->>CDP: DataFlowSuspendMessage
+      CCP-->>PCP: TransferSuspensionMessage (DSP)  
+      PCP->>PDP: DataFlowSuspendMessage
+      CCP->>CDP: DataFlowResumeMessage  
+      CCP-->>PCP: TransferStartMessage + DataAddress (DSP)  
+      PCP->>PDP: DataFlowResumeMessage + DataAddress  
+```
+
+#### Consumer Pull - Provider Suspend/Start
+
+```mermaid
+sequenceDiagram                 
+      participant CDP as Consumer<br/>Data Plane             
+      participant CCP as Consumer<br/>Control Plane             
+      participant PCP as Provider<br/>Control Plane             
+      participant PDP as Provider<br/>Data Plane             
+      
+      PCP->>PDP: DataFlowSuspendMessage
+      PCP-->>CCP: TransferSuspensionMessage (DSP)
+      CCP->>CDP: DataFlowSuspendMessage
+      PCP->>PDP: DataFlowResumeMessage  
+      PCP-->>CCP: TransferStartMessage + DataAddress (DSP)  
+      CCP->>CDP: DataFlowResumeMessage + DataAddress  
+```
+
+#### Consumer Pull - Consumer Suspend/Start
+
+```mermaid
+sequenceDiagram                 
+      participant CDP as Consumer<br/>Data Plane             
+      participant CCP as Consumer<br/>Control Plane             
+      participant PCP as Provider<br/>Control Plane             
+      participant PDP as Provider<br/>Data Plane             
+
+      CCP->>CDP: DataFlowSuspendMessage
+      CCP-->>PCP: TransferSuspensionMessage (DSP)  
+      PCP->>PDP: DataFlowSuspendMessage
+      CCP->>CDP: DataFlowResumeMessage  
+      CCP-->>PCP: TransferStartMessage + DataAddress (DSP)  
+      PCP->>PDP: DataFlowResumeMessage + DataAddress  
+```
+
 ## Data Flow API
 
 The [=Data Flow=] API comprises separate [=Data Plane=] and [=Control Plane=] endpoints.
@@ -436,6 +515,36 @@ The following is a non-normative example of a `DataFlowSuspendMessage`:
 ```json
 {
   "reason": "Suspending data flow due to scheduled maintenance."
+}
+```
+
+#### Resume
+
+The `resume` request signals to the [=Data Plane=] to resume a data transfer.
+
+|                 |                                                                                                |
+|-----------------|------------------------------------------------------------------------------------------------|
+| **HTTP Method** | `POST`                                                                                         |
+| **URL Path**    | `/dataflows/:id/resume`                                                                        |
+| **Request**     | [`DataFlowResumeMessage`](#dataflowresumemessage)                                              |
+| **Response**    | `HTTP 200` with a [`DataFlowStatusMessage`](#DataFlowStatusMessage) OR `HTTP 4xx Client Error` |
+
+##### DataFlowResumeMessage
+
+|              |                                                                                                                                                                              |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Schema**   | [JSON Schema](./schemas/DataFlowResumeMessage.schema.json)                                                                                                                   |
+| **Required** | - `messageId`: A unique identifier for the message.                                                                                                                          |
+|              | - `processId`: The transfer process ID as assigned by the control plane for correlation.                                                                                     |
+| **Optional** | - `dataAddress`: A [DataAddress](#data-address) that contains information about where the data can be obtained (consumer-pull). Must be omitted for provider-push transfers. |
+
+The following is a non-normative example of a `DataFlowResumeMessage`:
+
+```json
+{
+  "messageId": "b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a",
+  "processId": "test-transfer-process-id",
+  "dataAddress": {}
 }
 ```
 
