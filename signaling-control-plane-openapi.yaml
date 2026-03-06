@@ -157,45 +157,17 @@ paths:
         '404':
           description: Not Found - transfer process with specified ID does not exist
 
-  /dataplanes/register:
-    post:
-      tags:
-        - Data Plane Registration
-      summary: Register a data plane on the control plane.
-      description: |
-        The register endpoint is hosted on the control plane, and may be used to register a data plane on the control plane.
-      operationId: registerDataplane
-      requestBody:
-        description: Data plane registration data
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: 'https://w3id.org/dspace-sig/v1.0/DataPlaneRegistrationMessage.schema.json'
-      responses:
-        '200':
-          description: Data plane registered successfully
-        '400':
-          description: Bad Request - invalid input, invalid object state or missing required parameters
-
-  /dataplanes/{dataplaneId}:
+  /dataplanes:
     put:
       tags:
         - Data Plane Registration
-      summary: Update a data plane registration with replace semantics
+      summary: Create or Update a data plane registration
       description: |
-        The registration endpoint is hosted on the control plane, and may be used to update an existing data plane registration, fully replacing the existing one.
-      operationId: updateDataplaneRegistration
-      parameters:
-        - name: dataplaneId
-          in: path
-          required: true
-          description: The unique identifier of the data plane to update
-          schema:
-            type: string
-            example: dataplane-64345
+        The registration endpoint is hosted on the control plane, and may be used to create a new data plane or to
+        update an existing data plane registration, fully replacing the existing one.
+      operationId: upsertDataplaneRegistration
       requestBody:
-        description: Updated data plane registration data
+        description: Data plane registration data
         required: true
         content:
           application/json:
@@ -206,8 +178,6 @@ paths:
           description: Data plane registration updated successfully
         '400':
           description: Bad Request - invalid input, invalid object state or missing required parameters
-        '404':
-          description: Not Found - data plane with specified ID does not exist
 
     delete:
       tags:
