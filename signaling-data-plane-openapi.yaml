@@ -199,6 +199,42 @@ paths:
         '404':
           description: Not Found - data flow with specified ID does not exist
 
+  /dataflows/{id}/resume:
+    post:
+      tags:
+        - Data plane endpoints
+      summary: Resume a DataFlow
+      description: |
+        The suspend request signals to the data plane to resume a suspended data transfer.
+      operationId: resumeDataFlowById
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowResumeMessage.schema.json'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the data flow to resume
+          schema:
+            type: string
+            example: flow-1234
+      responses:
+        '200':
+          description: DataFlow resumed successfully
+          content:
+            application/json:
+              schema:
+                $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
+              example:
+                dataplaneId: dataplane-64345
+                state: STARTED
+        '400':
+          description: Bad Request - invalid input, invalid object state or missing required parameters
+        '404':
+          description: Not Found - data flow with specified ID does not exist
+
   /dataflows/{id}/terminate:
     post:
       tags:
