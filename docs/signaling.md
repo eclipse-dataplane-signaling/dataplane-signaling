@@ -435,11 +435,21 @@ provider and must be accessed by the provider data plane using an API Key:
   "callbackAddress": "https://example.com/provider/callback",
   "transferType": "com.test.http-PULL",
   "dataAddress": {
-    "type": "https://w3id.org/idsa/v4.1/HTTP",
-    "endpoint": "http://dataplane.provider.com/api/public",
-    "authType": "bearer",
+    "@type": "DataAddress",
     "endpointType": "https://w3id.org/idsa/v4.1/HTTP",
-    "authorization": "<AUTH_TOKEN>"
+    "endpoint": "http://dataplane.provider.com/api/public",
+    "endpointProperties": [
+      {
+        "@type": "EndpointProperty",
+        "name": "authorization",
+        "value": "<AUTH_TOKEN>"
+      },
+      {
+        "@type": "EndpointProperty",
+        "name": "authType",
+        "value": "bearer"
+      }
+    ]
   },
   "labels": ["gold", "blue"],
   "metadata": {
@@ -478,11 +488,21 @@ The following is a non-normative example of a `DataFlowStartedNotificationMessag
 ```json
 {
   "dataAddress": {
-    "type": "https://w3id.org/idsa/v4.1/HTTP",
-    "endpoint": "http://internal.provider.com/api/public",
-    "authType": "api-key",
+    "@type": "DataAddress",
     "endpointType": "https://w3id.org/idsa/v4.1/HTTP",
-    "authorization": "<API_KEY>"
+    "endpoint": "http://dataplane.provider.com/api/public",
+    "endpointProperties": [
+      {
+        "@type": "EndpointProperty",
+        "name": "authorization",
+        "value": "<AUTH_TOKEN>"
+      },
+      {
+        "@type": "EndpointProperty",
+        "name": "authType",
+        "value": "bearer"
+      }
+    ]
   }
 }
 ```
