@@ -834,8 +834,9 @@ follows:
 
 ### Authorization Profiles
 
-This section describes two optional profiles that can be used to authorize a [=Data Plane=] or [=Control Plane=]
-registration.
+This section describes an Authorization profile that can be used to authorize a [=Data Plane=] or [=Control Plane=]
+registration. Implementations SHOULD use this profile to ensure minimum interoperability and avoid to define custom
+authorization profiles.
 
 #### OAuth 2 Client Credentials Grant
 
@@ -895,19 +896,6 @@ sequenceDiagram
     coord ->> didp: DCR (using coord token)
     didp ->> coord: Access Token
     coord ->> cp: Register Data Plane (provide DCR Access Token)
-```
-
-#### API Key
-
-```json
-{
-  "authorization": [
-    {
-      "type": "apikey",
-      "key": "....."
-    }
-  ]
-}
 ```
 
 ## Data Transfer Type Registry
