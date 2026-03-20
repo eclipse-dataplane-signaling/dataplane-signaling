@@ -127,10 +127,13 @@ paths:
     post:
       tags:
         - Control plane endpoints
-      summary: Signals the TERMINATED state
+      summary: Signals a non-recoverable error
       description: |
-        The prepared request signals to the control plane that the data plane is in the TERMINATED state which indicates abnormal termination.
-      operationId: signalTerminated
+        The errored request notifies the control plane that a non-recoverable error has occurred at the wire protocol
+        layer. This request does not cause a state transition. The control plane must not propagate this event to the
+        counterparty and must independently decide on recovery: operator intervention, restarting the transfer process,
+        or creating a new transfer.
+      operationId: signalErrored
       parameters:
         - name: transferId
           in: path
@@ -140,7 +143,7 @@ paths:
             type: string
             example: 93a78371-7891-495e-afb5-9b11ac6b1e94
       requestBody:
-        description: DataFlow terminated notification
+        description: DataFlow errored notification
         required: true
         content:
           application/json:
@@ -148,7 +151,8 @@ paths:
               $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
             example:
               dataplaneId: dataplane-64345
-              state: TERMINATED
+              state: STARTED
+              error: Unrecoverable wire protocol error
       responses:
         '200':
           description: Notification received successfully
