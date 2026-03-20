@@ -136,15 +136,12 @@ paths:
                 dataplaneId: dataplane-64345
                 state: STARTED
                 dataAddress:
-                  '@type': DataAddress
                   endpointType: https://23id.org.idsa/v4.1/HTTP
                   endpoint: https://example.com/api/data
                   endpointProperties:
-                    - '@type': EndpointProperty
-                      name: authorization
+                    - name: authorization
                       value: 5up3r53cur3t0k3n
-                    - '@type': EndpointProperty
-                      name: authType
+                    - name: authType
                       value: bearer
         '202':
           description: Start request received, DataFlow is being started
