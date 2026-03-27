@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DatasetResponseSchema",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "https://w3id.org/dspace/2025/1/catalog/dataset-schema.json#/definitions/RootDataset"
+    }
+  ],
+  "$id": "DatasetResponse.schema.json"
+}

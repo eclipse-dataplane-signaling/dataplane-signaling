@@ -669,6 +669,44 @@ request does not exist.
 | **Request**     | [`DataFlowStatusMessage`]                 |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`     |
 
+#### Dataset retrieval
+
+The [=Data Plane=] MAY request the [=Control Plane=] for the dataset that is associated with the transfer.
+
+|                 |                                                                                  |
+|-----------------|----------------------------------------------------------------------------------|
+| **HTTP Method** | `GET`                                                                            |
+| **URL Path**    | `/transfers/:transferId/dataset`                                                 |
+| **Request**     |                                                                                  |
+| **Response**    | `HTTP 200` with a [DatasetResponse](#datasetresponse) OR `HTTP 4xx Client Error` |
+
+##### DatasetResponse
+
+|              |                                                       |
+|--------------|-------------------------------------------------------|
+| **Schema**   | [JSON Schema](./schemas/DatasetResponse.schema.json)  |
+
+Note that the dataset response schema reuses the `Dataset` schema definition as specified in the DSP.
+
+#### Agreement retrieval
+
+The [=Data Plane=] MAY request the [=Control Plane=] for the agreement that is associated with the transfer.
+
+|                 |                                                                                      |
+|-----------------|--------------------------------------------------------------------------------------|
+| **HTTP Method** | `GET`                                                                                |
+| **URL Path**    | `/transfers/:transferId/agreement`                                                   |
+| **Request**     |                                                                                      |
+| **Response**    | `HTTP 200` with an [AgreementResponse](#agreementresponse) OR `HTTP 4xx Client Error` |
+
+##### AgreementResponse
+
+|              |                                                        |
+|--------------|--------------------------------------------------------|
+| **Schema**   | [JSON Schema](./schemas/AgreementResponse.schema.json) |
+
+Note that the agreement response schema reuses the `Agreement` schema definition as specified in the DSP.
+
 ## Registration
 
 Registration is the process where a [=Data Plane=] is registered with the [=Control Plane=] and vice versa. Registration
