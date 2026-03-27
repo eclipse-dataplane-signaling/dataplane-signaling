@@ -157,34 +157,6 @@ paths:
         '404':
           description: Not Found - transfer process with specified ID does not exist
 
-  /transfers/{transferId}/dataset:
-    get:
-      tags:
-        - Control plane endpoints
-      summary: Retrieve the dataset associated with a transfer
-      description: |
-        Returns the dataset identified by the transfer's `datasetId`.
-      operationId: getTransferDataset
-      parameters:
-        - name: transferId
-          in: path
-          required: true
-          description: the unique identifier of the data transfer (= data flow)
-          schema:
-            type: string
-            example: 93a78371-7891-495e-afb5-9b11ac6b1e94
-      responses:
-        '200':
-          description: Dataset associated with the transfer
-          content:
-            application/json:
-              schema:
-                $ref: 'https://w3id.org/dspace-sig/v1.0/DatasetResponse.schema.json'
-        '400':
-          description: Bad Request - invalid input, invalid object state or missing required parameters
-        '404':
-          description: Not Found - transfer process with specified ID does not exist
-
   /transfers/{transferId}/agreement:
     get:
       tags:
