@@ -653,14 +653,22 @@ The `completed` request signals to the [=Control Plane=] that the [=Data Flow=] 
 
 #### Errored
 
-The `errored` request signals to the [=Control Plane=] that the [=Data Flow=] is in the TERMINATED state due to a
-non-recoverable error at the [=Wire Protocol=] layer.
+The `errored` request notifies the [=Control Plane=] that a non-recoverable error has occurred at the [=Wire Protocol=]
+layer. This request does not cause a state transition. The [=Control Plane=] MUST NOT propagate this event to the
+counterparty. Instead, the [=Control Plane=] must independently decide how to recover: through operator intervention,
+restarting the transfer process, or creating a new transfer.
 
 Note that only terminal, non-recoverable errors should be reported to the [=Control Plane=]. Transient errors should be
 handled by the [=Data Plane=].
 
-NOTE see [Terminated Event propagation](https://github.com/eclipse-dataplane-signaling/dataplane-signaling/issues/1) for why a `terminated`
-request does not exist.
+NOTE: A `terminated` request does not exist because direct termination signaling from the [=Data Plane=] to the
+[=Control Plane=] would create conflicting dual-termination scenarios. For example, if a provider data plane terminates
+due to a policy violation and closes the socket, the consumer data plane may independently detect this as a wire
+protocol error and send an `errored` message. Since these terminations cannot be correlated, propagating both as
+TERMINATED events would violate the DSP constraint that a transfer process cannot transition from TERMINATED to
+TERMINATED. [=Wire Protocol=] specifications MUST define what constitutes abnormal termination; for example, a socket
+close without a prior terminated message may be interpreted as an error, while a terminated message followed by a
+socket close is not.
 
 |                 |                                           |
 |-----------------|-------------------------------------------|
