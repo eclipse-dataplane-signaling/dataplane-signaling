@@ -235,7 +235,7 @@ sequenceDiagram
       CCP->>CDP: DataFlowSuspendMessage 
       PCP-->>CCP: TransferStartMessage (DSP)  
       CCP->>CDP: DataFlowResumeMessage  
-      CCP-->>PCP: TransferStartMessage + DataAddress (DSP+)
+      CCP-->>PCP: TransferStartMessage + DataAddress (DSP)
       PCP->>PDP: DataFlowResumeMessage + DataAddress 
 ```
 
@@ -286,9 +286,10 @@ sequenceDiagram
       CCP->>CDP: DataFlowSuspendMessage
       CCP-->>PCP: TransferSuspensionMessage (DSP)  
       PCP->>PDP: DataFlowSuspendMessage
-      CCP->>CDP: DataFlowResumeMessage  
-      CCP-->>PCP: TransferStartMessage + DataAddress (DSP)  
-      PCP->>PDP: DataFlowResumeMessage + DataAddress  
+      CCP-->>PCP: TransferStartMessage (DSP)
+      PCP->>PDP: DataFlowResumeMessage
+      PCP-->>CCP: TransferStartMessage + DataAddress (DSP)
+      CCP->>CDP: DataFlowResumeMessage + DataAddress
 ```
 
 ## Data Flow API
@@ -542,12 +543,12 @@ The `resume` request signals to the [=Data Plane=] to resume a data transfer.
 
 ##### DataFlowResumeMessage
 
-|              |                                                                                                                                                                              |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Schema**   | [JSON Schema](./schemas/DataFlowResumeMessage.schema.json)                                                                                                                   |
-| **Required** | - `messageId`: A unique identifier for the message.                                                                                                                          |
-|              | - `processId`: The transfer process ID as assigned by the control plane for correlation.                                                                                     |
-| **Optional** | - `dataAddress`: A [DataAddress](#data-address) that contains information about where the data can be obtained (consumer-pull). Must be omitted for provider-push transfers. |
+|              |                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------------------------------------------|
+| **Schema**   | [JSON Schema](./schemas/DataFlowResumeMessage.schema.json)                                                               |
+| **Required** | - `messageId`: A unique identifier for the message.                                                                      |
+|              | - `processId`: The transfer process ID as assigned by the control plane for correlation.                                 |
+| **Optional** | - `dataAddress`: A [DataAddress](#data-address) that contains information about where the data can be obtained/provided. |
 
 The following is a non-normative example of a `DataFlowResumeMessage`:
 
