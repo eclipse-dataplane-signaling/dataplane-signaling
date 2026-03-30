@@ -16,11 +16,8 @@
       "examples": ["https://dataplane.example.com/api/v1/signaling"]
     },
     "authorization": {
-      "type": "array",
-      "description": "an array of one or more authorization objects",
-      "items": {
-        "$ref": "https://w3id.org/dspace-sig/v1.0/AuthorizationEntry.schema.json"
-      }
+      "$ref": "https://w3id.org/dspace-sig/v1.0/AuthorizationEntry.schema.json",
+      "description": "an authorization object"
     }
   }
 }

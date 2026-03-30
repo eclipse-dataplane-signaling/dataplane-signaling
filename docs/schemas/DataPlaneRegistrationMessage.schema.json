@@ -28,11 +28,8 @@
       ]
     },
     "authorization": {
-      "type": "array",
-      "description": "an array of one or more authorization objects",
-      "items": {
-        "$ref": "https://w3id.org/dspace-sig/v1.0/AuthorizationEntry.schema.json"
-      }
+      "$ref": "https://w3id.org/dspace-sig/v1.0/AuthorizationEntry.schema.json",
+      "description": "an authorization object"
     },
     "labels": {
       "type": "array",
