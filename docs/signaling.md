@@ -719,7 +719,7 @@ The data plane registration message object contains the following properties:
 | **Required** | - `dataplaneId`: the data plane id                                                                  |
 |              | - `endpoint`: The data plane signaling endpoint.                                                    |
 |              | - `transferTypes`: An array of one or more strings corresponding to supported transfer types.       |
-| **Optional** | - `authorization`: an array of one or more authorization objects .                                  |
+| **Optional** | - `authorization`: an authorization object.                                                         |
 |              | - `labels`: an array of one or more strings corresponding to labels associated with the data plane. |
 
 The following is a non-normative example of a Data Plane registration data object:
@@ -729,11 +729,9 @@ The following is a non-normative example of a Data Plane registration data objec
   "dataplaneId": "7d6fda82-98b6-4738-a874-1f2c003a79ff",
   "endpoint": "https://example.com/signaling",
   "transferTypes": ["com.test.http-PULL"],
-  "authorization": [
-    {
-      "type": "..."
-    }
-  ],
+  "authorization": {
+    "type": "..."
+  },
   "labels": ["label1", "label2"]
 }
 ```
@@ -796,7 +794,7 @@ The control plane registration object contains the following properties:
 |--------------|----------------------------------------------------------------------|
 | **Schema**   | [JSON Schema](./schemas/ControlPlaneRegistrationMessage.schema.json) |
 | **Required** | - `controlplaneId`: the control plane id                             |
-| **Optional** | - `authorization`: an array of one or more authorization objects .   |
+| **Optional** | - `authorization`: an authorization object.                          |
 
 The following is a non-normative example of a Control Plane registration data object:
 
@@ -804,11 +802,9 @@ The following is a non-normative example of a Control Plane registration data ob
 {
   "controlplaneId": "bcf2d204-03bc-4354-8e92-b15b68d3c358",
   "endpoint": "https://example.com/signaling",
-  "authorization": [
-    {
-      "type": "..."
-    }
-  ]
+  "authorization": {
+    "type": "..."
+  }
 }
 ```
 
@@ -861,8 +857,8 @@ authorization profiles.
 #### OAuth 2 Client Credentials Grant
 
 A [=Control Plane=] or [=Data Plane=] that supports the OAuth 2.0 Client Credentials Grant as is defined in [RFC
-6749](https://tools.ietf.org/html/rfc6749#section-4.4) includes an `oauth2_client_credentials` authorization profile
-entry in its `authorization` array. This entry contains the following properties:
+6749](https://tools.ietf.org/html/rfc6749#section-4.4) uses an `oauth2_client_credentials` authorization profile
+in its `authorization` object. This object contains the following properties:
 
 |              |                                                                                                                                                 |
 | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -876,14 +872,12 @@ The following is a non-normative example of an OAuth2 entry:
 
 ```json
 {
-  "authorization": [
-    {
-      "type": "oauth2_client_credentials",
-      "tokenEndpoint": "https://example.com/auth",
-      "clientId": "1234567890",
-      "clientSecret": "1234567890"
-    }
-  ]
+  "authorization": {
+    "type": "oauth2_client_credentials",
+    "tokenEndpoint": "https://example.com/auth",
+    "clientId": "1234567890",
+    "clientSecret": "1234567890"
+  }
 }
 ```
 
