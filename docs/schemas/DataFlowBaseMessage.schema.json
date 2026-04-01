@@ -40,10 +40,6 @@
             "type": "string",
             "description": "the flow transfer type"
         },
-        "claims": {
-            "type": "object",
-            "description": "DSP claims of the counterparty as verified by the control plane"
-        },
         "metadata": {
             "type": "object"
         },
@@ -62,7 +58,6 @@
         "processId",
         "agreementId",
         "datasetId",
-        "transferType",
-        "claims"
+        "transferType"
     ]
 }

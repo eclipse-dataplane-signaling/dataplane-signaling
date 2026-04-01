@@ -334,7 +334,6 @@ PREPARED, the [=Data Plane=] MUST return HTTP 200 OK and a `DataFlowStatusMessag
 |                | - `datasetId`: The ID of the dataset in the DCAT Catalog which is to be transferred.                                   |
 |                | - `callbackAddress`: A URL where the control plane receives callbacks.                                                 |
 |                | - `transferType`: The type of data transfer. See [data transfer types](#data-transfer-types).                          |
-|                | - `claims`: An object containing the DSP claims of the counterparty as verified by the control plane.                  |
 | **Optional**:  | - `labels`: an array of strings that represent different flavours of data flow                                         |
 |                | - `metadata`: An object containing information that could be used by the data plane during preparation.                |
 
@@ -351,10 +350,6 @@ The following is a non-normative example of a `DataFlowPrepareMessage`:
   "datasetId": "asset-id",
   "callbackAddress": "https://example.com/provider/callback",
   "transferType": "com.test.s3-PUSH",
-  "claims": {
-    "membership": "active",
-    "sub": "subject"
-  },
   "labels": ["gold", "blue"],
   "metadata": {
     "bucketName": "destinationBucket",
@@ -416,7 +411,6 @@ Accepted with the `Location` header set to the [data flow status relative URL](#
 |              | - `datasetId`: The ID of the dataset in the DCAT Catalog which is to be transferred.                                                                                                        |
 |              | - `callbackAddress`: A URL where the control plane receives callbacks.                                                                                                                      |
 |              | - `transferType`: The type of data transfer. See [data transfer types](#data-transfer-types).                                                                                               |
-|              | - `claims`: An object containing the DSP claims of the counterparty as verified by the control plane.                                                                                       |
 | **Optional** | - `dataAddress`: An object containing information about where the provider should push data (provider push). Must be omitted on consumer pull transfers. See [data address](#data-address). |
 |              | - `labels`: an array of strings that represent different flavours of data flow                                                                                                              |
 |              | - `metadata`: An object containing information that could be used by the data plane during startup.                                                                                         |
@@ -438,10 +432,6 @@ provider and must be accessed by the provider data plane using an API Key:
   "datasetId": "asset-id",
   "callbackAddress": "https://example.com/provider/callback",
   "transferType": "com.test.http-PULL",
-  "claims": {
-    "membership": "active",
-    "sub": "subject"
-  },
   "dataAddress": {
     "endpointType": "https://w3id.org/idsa/v4.1/HTTP",
     "endpoint": "http://dataplane.provider.com/api/public",
