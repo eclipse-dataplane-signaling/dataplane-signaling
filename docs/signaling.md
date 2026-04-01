@@ -881,6 +881,23 @@ The following is a non-normative example of an OAuth2 entry:
 }
 ```
 
+##### Token Claims
+
+Access tokens obtained via the Client Credentials Grant are self-signed JWTs. The issuing party signs the token with
+its own private key; the receiving party MUST NOT be required to verify the token signature against an external public
+key or contact a token introspection endpoint. Verification is based solely on the claims contained in the token.
+
+The access token MUST be a JWT and MUST contain the following claims:
+
+| Claim | Requirement | Description                                                                                                                                                            |
+|-------|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `iss` | MUST        | Issuer of the token                                                                                                                                                    |
+| `sub` | MUST        | The identifier of the issuing party. For a [=Data Plane=] token this MUST equal the `dataplaneId`; for a [=Control Plane=] token this MUST equal the `controlplaneId`. |
+| `aud` | MUST        | The identifier of the target plane receiving the token.                                                                                                                |
+| `iat` | MUST        | The time at which the token was issued (seconds since Unix epoch).                                                                                                     |
+| `exp` | MUST        | The expiration time of the token (seconds since Unix epoch). Receiving parties MUST reject expired tokens.                                                             |
+| `jti` | SHOULD      | A unique token identifier. Receiving parties SHOULD use this to detect and reject token replay attempts.                                                               |
+
 ##### Dynamic Client Registration
 
 TODO Discussion of the control/data plane being a resource server and dynamic client registration.
