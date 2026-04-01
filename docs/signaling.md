@@ -689,6 +689,25 @@ socket close is not.
 | **Request**     | [`DataFlowStatusMessage`]                 |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`     |
 
+#### Agreement retrieval
+
+The [=Data Plane=] MAY request the [=Control Plane=] for the agreement that is associated with the transfer.
+
+|                 |                                                                                      |
+|-----------------|--------------------------------------------------------------------------------------|
+| **HTTP Method** | `GET`                                                                                |
+| **URL Path**    | `/transfers/:transferId/agreement`                                                   |
+| **Request**     |                                                                                      |
+| **Response**    | `HTTP 200` with an [AgreementResponse](#agreementresponse) OR `HTTP 4xx Client Error` |
+
+##### AgreementResponse
+
+|              |                                                        |
+|--------------|--------------------------------------------------------|
+| **Schema**   | [JSON Schema](./schemas/AgreementResponse.schema.json) |
+
+Note that the agreement response schema reuses the `Agreement` schema definition as specified in the DSP.
+
 ## Registration
 
 Registration is the process where a [=Data Plane=] is registered with the [=Control Plane=] and vice versa. Registration
