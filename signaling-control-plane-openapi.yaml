@@ -45,7 +45,6 @@ paths:
             schema:
               $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
             example:
-              dataplaneId: dataplane-64345
               state: PREPARED
       responses:
         '200':
@@ -79,7 +78,6 @@ paths:
             schema:
               $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
             example:
-              dataplaneId: dataplane-64345
               state: STARTED
       responses:
         '200':
@@ -113,7 +111,6 @@ paths:
             schema:
               $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
             example:
-              dataplaneId: dataplane-64345
               state: COMPLETED
       responses:
         '200':
@@ -150,7 +147,6 @@ paths:
             schema:
               $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
             example:
-              dataplaneId: dataplane-64345
               state: STARTED
               error: Unrecoverable wire protocol error
       responses:
