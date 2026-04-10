@@ -667,11 +667,12 @@ The `started` request signals to the [=Control Plane=] that the [=Data Flow=] is
 
 The `completed` request signals to the [=Control Plane=] that the [=Data Flow=] is in the COMPLETED state.
 
-|                 |                                             |
-| --------------- | ------------------------------------------- |
-| **HTTP Method** | `POST`                                      |
-| **URL Path**    | `/transfers/:transferId/dataflow/completed` |
-| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`       |
+|                 |                                                       |
+| --------------- | ----------------------------------------------------- |
+| **HTTP Method** | `POST`                                                |
+| **URL Path**    | `/transfers/:transferId/dataflow/completed`           |
+| **Request**     | [`DataFlowStatusMessage`](#DataFlowStatusMessage)     |
+| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`                 |
 
 #### Errored
 
