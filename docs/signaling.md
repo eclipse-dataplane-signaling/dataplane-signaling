@@ -368,9 +368,8 @@ The following is a non-normative example of a `DataFlowPrepareMessage`:
 
 |              |                                                                                                                                     |
 |--------------|-------------------------------------------------------------------------------------------------------------------------------------|
-| **Schema**   | [JSON Schema](./schemas/DataFlowStatusMessage.schema.json)                                                                        |
-| **Required** | - `dataplaneId`: The unique identifier of the data plane.                                                                           |
-|              | - `dataFlowId`: The unique identifier of the data flow.                                                                             |
+| **Schema**   | [JSON Schema](./schemas/DataFlowStatusMessage.schema.json)                                                                          |
+| **Required** | - `dataFlowId`: The unique identifier of the data flow.                                                                             |
 |              | - `state`: The current state of the data flow.                                                                                      |
 | **Optional** | - `dataAddress`: An object containing information about where the data can be obtained/provided. See [data address](#data-address). |
 |              | - `error`: A description of any error that occurred during processing.                                                              |
@@ -379,7 +378,6 @@ The following is a non-normative example of a `DataFlowStatusMessage`:
 
 ```json
 {
-  "dataplaneId": "ha-dataplane-123",
   "dataFlowId": "dataFlow-123",
   "dataAddress": {},
   "state": "PREPARED",
