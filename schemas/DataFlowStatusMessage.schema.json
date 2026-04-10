@@ -4,9 +4,6 @@
     "title": "DataFlowStatusMessage",
     "type": "object",
     "properties": {
-        "dataplaneId": {
-            "type": "string"
-        },
         "dataFlowId": {
             "type": "string"
         },
@@ -31,7 +28,6 @@
         }
     },
     "required": [
-        "dataplaneId",
         "dataFlowId",
         "state"
     ]
