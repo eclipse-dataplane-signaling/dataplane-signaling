@@ -888,15 +888,22 @@ A [=Control Plane=] or [=Data Plane=] that supports the OAuth 2.0 Client Credent
 6749](https://tools.ietf.org/html/rfc6749#section-4.4) uses an `oauth2_client_credentials` authorization profile
 in its `authorization` object. This object contains the following properties:
 
-|              |                                                                                                                                                 |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Schema**   | [JSON Schema](./resources/TBD)                                                                                                                  |
-| **Required** | - `type`: Must be `oauth2_client_credentials`.                                                                                                  |
-|              | - `tokenEndpoint`: The URL of the authorization server's token endpoint as defined in [RFC6749](https://datatracker.ietf.org/doc/html/rfc6749). |
-|              | - `clientId`: The OAuth2 client id used for the Client Credentials Grant.                                                                       |
-|              | - `clientSecret`: The OAuth2 client secret used for the Client Credentials Grant.                                                               |
+|              |                                                                                                                                                                                                                     |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Schema**   | [JSON Schema](./resources/TBD)                                                                                                                                                                                      |
+| **Required** | - `type`: Must be `oauth2_client_credentials`.                                                                                                                                                                      |
+|              | - `tokenEndpoint`: The URL of the authorization server's token endpoint as defined in [RFC6749](https://datatracker.ietf.org/doc/html/rfc6749).                                                                     |
+|              | - `clientId`: The OAuth2 client id used for the Client Credentials Grant.                                                                                                                                           |
+|              | - `clientSecret`: The OAuth2 client secret used for the Client Credentials Grant.                                                                                                                                   |
+| **Optional** | - `jwks`: A JSON Web Key Set ([RFC7517](https://datatracker.ietf.org/doc/html/rfc7517)) containing the public key(s) the receiving party MUST use to verify tokens issued by this party.                            |
+|              | - `jwksUri`: A URL pointing to a JSON Web Key Set endpoint. The receiving party MAY fetch and cache the JWKS from this URL to verify tokens issued by this party.                                                   |
 
-The following is a non-normative example of an OAuth2 entry:
+The way `jwks` and `jwksUri` are managed is implementation specific, but generally speaking they should never used at the
+same time. If neither is provided, the receiving party skips signature verification. When a JWKS is present, the 
+receiving party MUST use the key whose `kid` matches the `kid` header claim of the incoming JWT. If no `kid` is present,
+the receiving party MAY attempt verification with each key in the set.
+
+The following is a non-normative example of an OAuth2 entry using an inline JWKS:
 
 ```json
 {
@@ -904,7 +911,32 @@ The following is a non-normative example of an OAuth2 entry:
     "type": "oauth2_client_credentials",
     "tokenEndpoint": "https://example.com/auth",
     "clientId": "1234567890",
-    "clientSecret": "1234567890"
+    "clientSecret": "1234567890",
+    "jwks": {
+      "keys": [
+        {
+          "kty": "RSA",
+          "kid": "key-2025-04",
+          "use": "sig",
+          "n": "...",
+          "e": "AQAB"
+        }
+      ]
+    }
+  }
+}
+```
+
+The following is a non-normative example using a JWKS URI:
+
+```json
+{
+  "authorization": {
+    "type": "oauth2_client_credentials",
+    "tokenEndpoint": "https://example.com/auth",
+    "clientId": "1234567890",
+    "clientSecret": "1234567890",
+    "jwksUri": "https://example.com/auth/.well-known/jwks.json"
   }
 }
 ```
@@ -912,8 +944,9 @@ The following is a non-normative example of an OAuth2 entry:
 ##### Token Claims
 
 Access tokens obtained via the Client Credentials Grant are self-signed JWTs. The issuing party signs the token with
-its own private key; the receiving party MUST NOT be required to verify the token signature against an external public
-key or contact a token introspection endpoint. Verification is based solely on the claims contained in the token.
+its own private key. If a `jwks` or `jwksUri` was provided during registration, the receiving party MUST verify the
+token signature using those public key(s). Otherwise, signature verification is skipped and verification is based
+solely on the claims contained in the token.
 
 The access token MUST be a JWT and MUST contain the following claims:
 
