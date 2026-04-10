@@ -899,10 +899,10 @@ in its `authorization` object. This object contains the following properties:
 | **Optional** | - `jwks`: A JSON Web Key Set ([RFC7517](https://datatracker.ietf.org/doc/html/rfc7517)) containing the public key(s) the receiving party MUST use to verify tokens issued by this party.                            |
 |              | - `jwksUri`: A URL pointing to a JSON Web Key Set endpoint. The receiving party MAY fetch and cache the JWKS from this URL to verify tokens issued by this party.                                                   |
 
-If both `jwks` and `jwksUri` are provided, `jwks` takes precedence. If neither is provided, the receiving party skips
-signature verification. When a JWKS is present, the receiving party MUST use the key whose `kid` matches the `kid`
-header claim of the incoming JWT. If no `kid` is present, the receiving party MAY attempt verification with each key
-in the set.
+The way `jwks` and `jwksUri` are managed is implementation specific, but generally speaking they should never used at the
+same time. If neither is provided, the receiving party skips signature verification. When a JWKS is present, the 
+receiving party MUST use the key whose `kid` matches the `kid` header claim of the incoming JWT. If no `kid` is present,
+the receiving party MAY attempt verification with each key in the set.
 
 The following is a non-normative example of an OAuth2 entry using an inline JWKS:
 
