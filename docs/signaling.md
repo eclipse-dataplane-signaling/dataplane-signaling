@@ -528,12 +528,14 @@ The `suspend` request signals to the [=Data Plane=] to suspend a data transfer.
 |              |                                                                       |
 | ------------ | --------------------------------------------------------------------- |
 | **Schema**   | [JSON Schema](./schemas/DataFlowSuspendMessage.schema.json)           |
+| **Required** | - `messageId`: A unique identifier for the message.                   |
 | **Optional** | - `reason`: A description of the reason for suspending the data flow. |
 
 The following is a non-normative example of a `DataFlowSuspendMessage`:
 
 ```json
 {
+  "messageId": "b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a",
   "reason": "Suspending data flow due to scheduled maintenance."
 }
 ```
@@ -555,7 +557,6 @@ The `resume` request signals to the [=Data Plane=] to resume a data transfer.
 |--------------|--------------------------------------------------------------------------------------------------------------------------|
 | **Schema**   | [JSON Schema](./schemas/DataFlowResumeMessage.schema.json)                                                               |
 | **Required** | - `messageId`: A unique identifier for the message.                                                                      |
-|              | - `processId`: The transfer process ID as assigned by the control plane for correlation.                                 |
 | **Optional** | - `dataAddress`: A [DataAddress](#data-address) that contains information about where the data can be obtained/provided. |
 
 The following is a non-normative example of a `DataFlowResumeMessage`:
@@ -563,7 +564,6 @@ The following is a non-normative example of a `DataFlowResumeMessage`:
 ```json
 {
   "messageId": "b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a",
-  "processId": "test-transfer-process-id",
   "dataAddress": {}
 }
 ```
@@ -584,12 +584,14 @@ The `terminate` request signals to the [=Data Plane=] to terminate a data transf
 |              |                                                                        |
 | ------------ | ---------------------------------------------------------------------- |
 | **Schema**   | [JSON Schema](./schemas/DataFlowTerminateMessage.schema.json)          |
+| **Required** | - `messageId`: A unique identifier for the message.                    |
 | **Optional** | - `reason`: A description of the reason for terminating the data flow. |
 
 The following is a non-normative example of a `DataFlowTerminateMessage`:
 
 ```json
 {
+  "messageId": "b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a",
   "reason": "Terminating data flow due to an unrecoverable error."
 }
 ```
