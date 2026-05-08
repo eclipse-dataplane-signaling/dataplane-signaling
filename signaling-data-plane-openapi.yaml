@@ -40,6 +40,7 @@ paths:
               schema:
                 $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
               example:
+                messageId: b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a
                 state: PREPARED
         '202':
           description: Request received, DataFlow preparation in progress
@@ -55,6 +56,7 @@ paths:
               schema:
                 $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
               example:
+                messageId: b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a
                 state: PREPARING
         '400':
           description: Bad Request - invalid input, invalid object state or missing required parameters, supplying the
@@ -131,6 +133,7 @@ paths:
               schema:
                 $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
               example:
+                messageId: b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a
                 state: STARTED
                 dataAddress:
                   endpointType: https://23id.org.idsa/v4.1/HTTP
@@ -154,8 +157,8 @@ paths:
               schema:
                 $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
               example:
-                example:
-                  state: STARTING
+                messageId: b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a
+                state: STARTING
         '400':
           description: Bad Request - invalid input, invalid object state or missing required parameters, supplying a
             dataAddress in consumer-pull transfers or omitting the dataAddress in provider-push transfers
@@ -227,6 +230,7 @@ paths:
               schema:
                 $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
               example:
+                messageId: b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a
                 state: STARTED
         '400':
           description: Bad Request - invalid input, invalid object state or missing required parameters

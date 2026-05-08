@@ -369,7 +369,8 @@ The following is a non-normative example of a `DataFlowPrepareMessage`:
 |              |                                                                                                                                     |
 |--------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | **Schema**   | [JSON Schema](./schemas/DataFlowStatusMessage.schema.json)                                                                          |
-| **Required** | - `dataFlowId`: The unique identifier of the data flow.                                                                             |
+| **Required** | - `messageId`: A unique identifier for the message.                                                                                 |
+|              | - `dataFlowId`: The unique identifier of the data flow.                                                                             |
 |              | - `state`: The current state of the data flow.                                                                                      |
 | **Optional** | - `dataAddress`: An object containing information about where the data can be obtained/provided. See [data address](#data-address). |
 |              | - `error`: A description of any error that occurred during processing.                                                              |
@@ -378,6 +379,7 @@ The following is a non-normative example of a `DataFlowStatusMessage`:
 
 ```json
 {
+  "messageId": "b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a",
   "dataFlowId": "dataFlow-123",
   "dataAddress": {},
   "state": "PREPARED",
@@ -484,12 +486,14 @@ This signal occurs exclusively on the consumer side.
 |              |                                                                                                                                                                              |
 |--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Schema**   | [JSON Schema](./schemas/DataFlowStartedNotificationMessage.schema.json)                                                                                                      |
+| **Required** | - `messageId`: A unique identifier for the message.                                                                                                                          |
 | **Optional** | - `dataAddress`: A [DataAddress](#data-address) that contains information about where the data can be obtained (consumer-pull). Must be omitted for provider-push transfers. |
 
 The following is a non-normative example of a `DataFlowStartedNotificationMessage`:
 
 ```json
 {
+  "messageId": "b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a",
   "dataAddress": {
     "endpointType": "https://w3id.org/idsa/v4.1/HTTP",
     "endpoint": "http://dataplane.provider.com/api/public",

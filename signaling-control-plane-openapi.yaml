@@ -45,6 +45,7 @@ paths:
             schema:
               $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
             example:
+              messageId: b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a
               state: PREPARED
       responses:
         '200':
@@ -78,6 +79,7 @@ paths:
             schema:
               $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
             example:
+              messageId: b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a
               state: STARTED
       responses:
         '200':
@@ -111,6 +113,7 @@ paths:
             schema:
               $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
             example:
+              messageId: b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a
               state: COMPLETED
       responses:
         '200':
@@ -147,6 +150,7 @@ paths:
             schema:
               $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowStatusMessage.schema.json'
             example:
+              messageId: b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a
               state: STARTED
               error: Unrecoverable wire protocol error
       responses:
