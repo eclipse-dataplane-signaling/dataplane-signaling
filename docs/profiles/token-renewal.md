@@ -98,7 +98,7 @@ Content-Type: application/x-www-form-urlencoded
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 ```
 
-Refresh requests must be sent over TLS/HTTPS.
+Refresh requests MUST be sent over TLS/HTTPS.
 
 ### 3.1. Client Authentication
 
