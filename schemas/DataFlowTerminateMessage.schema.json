@@ -4,8 +4,15 @@
     "title": "DataFlowTerminateMessage",
     "type": "object",
     "properties": {
+        "messageId": {
+            "type": "string",
+            "description": "Unique identifier for the message"
+        },
         "reason": {
             "type": "string"
         }
-    }
+    },
+    "required": [
+        "messageId"
+    ]
 }
