@@ -171,11 +171,14 @@ paths:
         The suspend request signals to the data plane to suspend an ongoing data transfer.
       operationId: suspendDataFlowById
       requestBody:
-        required: false
+        required: true
         content:
           application/json:
             schema:
               $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowSuspendMessage.schema.json'
+            example:
+              messageId: b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a
+              reason: Suspending data flow due to scheduled maintenance.
       parameters:
         - name: id
           in: path
@@ -201,10 +204,13 @@ paths:
         The suspend request signals to the data plane to resume a suspended data transfer.
       operationId: resumeDataFlowById
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowResumeMessage.schema.json'
+            example:
+              messageId: b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a
       parameters:
         - name: id
           in: path
@@ -236,11 +242,14 @@ paths:
         The terminate request signals to the data plane to terminate an ongoing data transfer.
       operationId: terminateDataFlowById
       requestBody:
-        required: false
+        required: true
         content:
           application/json:
             schema:
               $ref: 'https://w3id.org/dspace-sig/v1.0/DataFlowTerminateMessage.schema.json'
+            example:
+              messageId: b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a
+              reason: Terminating data flow due to an unrecoverable error.
       parameters:
         - name: id
           in: path
