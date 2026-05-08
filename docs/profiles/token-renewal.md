@@ -31,37 +31,38 @@ This profile defines the following additional `EndpointProperties` within the `D
 - `expiresIn` — REQUIRED if `refreshToken` is present: The lifetime in seconds of the `accessToken` as defined by the
   OAuth 2.0 specification.
 - `refreshEndpoint` — OPTIONAL: The endpoint address for the provider authorization server that handles token refresh
-  requests. If omitted, the data plane endpoint address specified by `dspace:endpoint` in the `DataAddress` MUST be
+  requests. If omitted, the data plane endpoint address specified by `endpoint` in the `DataAddress` MUST be
   used.
 - `refreshTokenType` — RESERVED FOR FUTURE USE.
 
 The following example of a `DataAddress` containing the above properties is NON-NORMATIVE:
-
+           
 ```json
-{
-  "dspace:dataAddress": {
-    "dspace:endpointType": "https://w3id.org/idsa/v4.1/HTTP",
-    "dspace:endpoint": "https://example.com",
-    "dspace:endpointProperties": [
+  {
+  "dataAddress": {
+    "@type": "DataAddress",
+    "endpointType": "https://w3id.org/idsa/v4.1/HTTP",
+    "endpoint": "http://example.com",
+    "endpointProperties": [
       {
-        "dspace:name": "authorization",
-        "dspace:value": "TOKEN-ABCDEFG"
+        "name": "authorization",
+        "value": "TOKEN-ABCDEFG"
       },
       {
-        "dspace:name": "authType",
-        "dspace:value": "bearer"
+        "name": "authType",
+        "value": "bearer"
       },
       {
-        "dspace:name": "refreshToken",
-        "dspace:value": "REFRESH-TOKEN-ABCDEFG"
+        "name": "refreshToken",
+        "value": "REFRESH-TOKEN-ABCDEFG"
       },
       {
-        "dspace:name": "expiresIn",
-        "dspace:value": "300"
+        "name": "expiresIn",
+        "value": "300"
       },
       {
-        "dspace:name": "refreshEndpoint",
-        "dspace:value": "https://example.com/authorization/refresh"
+        "name": "refreshEndpoint",
+        "value": "https://example.com/authorization/refresh"
       }
     ]
   }
