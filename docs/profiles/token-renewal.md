@@ -12,7 +12,7 @@ token.
 Client authentication is particularly challenging in a dataspace context because a data provider will often not have a
 pre-existing relationship with a data consumer. Consequently, the use of a `client_id` and `client_secret` must not be
 assumed to be feasible for authenticating a token refresh request. This profile defines a mechanism for performing
-refresh token authentication based on IATP identities and, in particular, Decentralized Identifiers (DIDs).
+refresh token authentication based on DCP identities and, in particular, Decentralized Identifiers (DIDs).
 
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT
 RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in [RFC 8174]
