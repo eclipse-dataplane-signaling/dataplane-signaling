@@ -4,6 +4,10 @@
     "title": "DataFlowStatusMessage",
     "type": "object",
     "properties": {
+        "messageId": {
+            "type": "string",
+            "description": "Unique identifier for the message"
+        },
         "dataFlowId": {
             "type": "string"
         },
@@ -28,6 +32,7 @@
         }
     },
     "required": [
+        "messageId",
         "dataFlowId",
         "state"
     ]
