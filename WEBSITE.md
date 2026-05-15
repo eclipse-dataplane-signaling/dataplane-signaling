@@ -67,7 +67,7 @@ and then (independently of major/minor) a second commit
 - Rerun the actions.
 
 You should now see an additional endpoint at
-`https://eclipse-dataplane-signaling/dataplane-signaling/my-version-tag/`.
+`https://eclipse-dataplane-signaling.github.io/dataplane-signaling/my-version-tag/`.
 
 #### Github Release
 
