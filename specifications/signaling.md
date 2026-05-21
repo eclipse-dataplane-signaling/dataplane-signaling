@@ -8,16 +8,16 @@ that can be combined to meet the requirements of different dataspace use cases.
 
 The following terms are used to describe concepts in this specification.
 
-- Connector: Software services that manage the exchange of data between a provider and consumer as defined by the DSP
+- <dfn>Connector</dfn>: Software services that manage the exchange of data between a provider and consumer as defined by the DSP
   Specification.
-- Control Plane: The [=Connector=] services that implement the DSP protocol.
-- Data Flow: The exchange of data belonging to a [=Dataset=] between a provider and consumer [=Data Plane=].
-- Data Plane: The [=Connector=] services that implement a [=Data Flow=] using a [=Wire Protocol=].
-- Dataset: Data or a technical service that can be shared as defined by the DSP Specification.
-- Participant: A dataspace member as defined by the DSP Specification.
-- Transfer Process: A set of interactions between two connectors that provide access to a dataset as defined by the DSP
+- <dfn>Control Plane</dfn>: The [=Connector=] services that implement the DSP protocol.
+- <dfn>Data Flow</dfn>: The exchange of data belonging to a [=Dataset=] between a provider and consumer [=Data Plane=].
+- <dfn>Data Plane</dfn>: The [=Connector=] services that implement a [=Data Flow=] using a [=Wire Protocol=].
+- <dfn>Dataset</dfn>: Data or a technical service that can be shared as defined by the DSP Specification.
+- <dfn>Participant</dfn>: A dataspace member as defined by the DSP Specification.
+- <dfn>Transfer Process</dfn>: A set of interactions between two connectors that provide access to a dataset as defined by the DSP
   Specification.
-- Wire Protocol: A protocol such as MQTT, AMQP, or an HTTP REST API that governs the exchange of data.
+- <dfn>Wire Protocol</dfn>: A protocol such as MQTT, AMQP, or an HTTP REST API that governs the exchange of data.
 
 ## Base Concepts
 
@@ -64,8 +64,8 @@ The [=Data Flow=] state machine is defined by the following states and transitio
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Preparing: Prepare <br> (Control Plane)
-    [*] --> Starting: Start <br/> (Control Plane)
+    [*] --> Preparing: Prepare (Control Plane)
+    [*] --> Starting: Start (Control Plane)
     Preparing --> Prepared
     Prepared --> Starting
     Starting --> Started
@@ -106,8 +106,8 @@ state. In these cases, the transitions happen synchronously and can be represent
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Prepared: Prepare <br/> (Control Plane)
-    [*] --> Started: Start <br/> (Control Plane)
+    [*] --> Prepared: Prepare (Control Plane)
+    [*] --> Started: Start (Control Plane)
     Prepared --> Started
     Started --> Suspended
     Started --> Completed
@@ -155,10 +155,10 @@ use to push data to the consumer. The complete [=Data Flow=] sequence is detaile
 
 ```mermaid
 sequenceDiagram
-    participant cdp as Consumer<br/>Data Plane
-    participant ccp as Consumer<br/>Control Plane
-    participant pcp as Provider<br/>Control Plane
-    participant pdp as Provider<br/>Data Plane
+    participant cdp as Consumer Data Plane
+    participant ccp as Consumer Control Plane
+    participant pcp as Provider Control Plane
+    participant pdp as Provider Data Plane
     ccp ->> cdp: /prepare
     cdp ->> ccp: /prepared + DataAddress
     ccp -->> pcp: TransferRequestMessage + DataAddress
@@ -191,14 +191,12 @@ diagram:
 
 ```mermaid
 sequenceDiagram
-    participant cdp as Consumer<br/>Data Plane
-    participant ccp as Consumer<br/>Control Plane
-    participant pcp as Provider<br/>Control Plane
-    participant pdp as Provider<br/>Data Plane
-
+    participant cdp as Consumer Data Plane
+    participant ccp as Consumer Control Plane
+    participant pcp as Provider Control Plane
+    participant pdp as Provider Data Plane
     ccp ->> cdp: Prepare
     cdp ->> ccp: Prepared
-
     ccp -->> pcp: TransferRequestMessage
     pcp ->> pdp: /start
     pdp ->> pcp: /started + DataAddress
@@ -224,12 +222,11 @@ is initiated by the Provider or the Consumer:
 #### Provider Push - Provider Suspend/Start
 
 ```mermaid
-sequenceDiagram                 
-      participant CDP as Consumer<br/>Data Plane             
-      participant CCP as Consumer<br/>Control Plane             
-      participant PCP as Provider<br/>Control Plane             
-      participant PDP as Provider<br/>Data Plane             
-      
+sequenceDiagram
+      participant CDP as Consumer Data Plane             
+      participant CCP as Consumer Control Plane             
+      participant PCP as Provider Control Plane             
+      participant PDP as Provider Data Plane             
       PCP->>PDP: DataFlowSuspendMessage
       PCP-->>CCP: TransferSuspensionMessage (DSP)
       CCP->>CDP: DataFlowSuspendMessage 
@@ -244,11 +241,10 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram                 
-      participant CDP as Consumer<br/>Data Plane             
-      participant CCP as Consumer<br/>Control Plane             
-      participant PCP as Provider<br/>Control Plane             
-      participant PDP as Provider<br/>Data Plane             
-
+      participant CDP as Consumer Data Plane             
+      participant CCP as Consumer Control Plane             
+      participant PCP as Provider Control Plane             
+      participant PDP as Provider Data Plane             
       CCP->>CDP: DataFlowSuspendMessage
       CCP-->>PCP: TransferSuspensionMessage (DSP)  
       PCP->>PDP: DataFlowSuspendMessage
@@ -261,11 +257,10 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram                 
-      participant CDP as Consumer<br/>Data Plane             
-      participant CCP as Consumer<br/>Control Plane             
-      participant PCP as Provider<br/>Control Plane             
-      participant PDP as Provider<br/>Data Plane             
-      
+      participant CDP as Consumer Data Plane             
+      participant CCP as Consumer Control Plane             
+      participant PCP as Provider Control Plane             
+      participant PDP as Provider Data Plane             
       PCP->>PDP: DataFlowSuspendMessage
       PCP-->>CCP: TransferSuspensionMessage (DSP)
       CCP->>CDP: DataFlowSuspendMessage
@@ -278,11 +273,10 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram                 
-      participant CDP as Consumer<br/>Data Plane             
-      participant CCP as Consumer<br/>Control Plane             
-      participant PCP as Provider<br/>Control Plane             
-      participant PDP as Provider<br/>Data Plane             
-
+      participant CDP as Consumer Data Plane             
+      participant CCP as Consumer Control Plane             
+      participant PCP as Provider Control Plane             
+      participant PDP as Provider Data Plane             
       CCP->>CDP: DataFlowSuspendMessage
       CCP-->>PCP: TransferSuspensionMessage (DSP)  
       PCP->>PDP: DataFlowSuspendMessage
@@ -313,12 +307,12 @@ to PREPARING, the [=Data Plane=] MUST return HTTP 202 Accepted with the `Locatio
 relative URL](#status) and a message body containing a `DataFlowStatusMessage`. If the state machine transitions to
 PREPARED, the [=Data Plane=] MUST return HTTP 200 OK and a `DataFlowStatusMessage`.
 
-|                 |                                                                                                                                                                               |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **HTTP Method** | `POST`                                                                                                                                                                        |
-| **URL Path**    | `/dataflows/prepare`                                                                                                                                                          |
-| **Request**     | [`DataFlowPrepareMessage`](#dataflowpreparemessage)                                                                                                                           |
-| **Response**    | `HTTP 200` with a [`DataFlowStatusMessage`](#DataFlowStatusMessage) OR `HTTP 202` with a [`DataFlowStatusMessage`](#DataFlowStatusMessage) OR `HTTP 4xx Client Error` |
+|                 |                                                                                                                                                                       |
+| --------------- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **HTTP Method** | `POST`                                                                                                                                                                |
+| **URL Path**    | `/dataflows/prepare`                                                                                                                                                  |
+| **Request**     | [`DataFlowPrepareMessage`](#dataflowpreparemessage)                                                                                                                   |
+| **Response**    | `HTTP 200` with a [`DataFlowStatusMessage`](#dataflowstatusmessage) OR `HTTP 202` with a [`DataFlowStatusMessage`](#dataflowstatusmessage) OR `HTTP 4xx Client Error` |
 
 ##### DataFlowPrepareMessage
 
@@ -395,12 +389,12 @@ Accepted with the `Location` header set to the [data flow status relative URL](#
 `DataFlowStatusMessage`. If the state machine transitions to STARTED, the [=Data Plane=] MUST return HTTP 200 OK and a
 `DataFlowStatusMessage`.
 
-|                 |                                                                                                                                                                                |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **HTTP Method** | `POST`                                                                                                                                                                         |
-| **URL Path**    | `/dataflows/start`                                                                                                                                                             |
-| **Request**     | [`DataFlowStartMessage`](#dataflowstartmessage)                                                                                                                                |
-| **Response**    | `HTTP 200` with a [`DataFlowStatusMessage`](#DataFlowStatusMessage) OR `HTTP 202` with a [`DataFlowStatusMessage`](#DataFlowStatusMessage) OR `HTTP 4xx Client Error`. |
+|                 |                                                                                                                                                                        |
+| --------------- |------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **HTTP Method** | `POST`                                                                                                                                                                 |
+| **URL Path**    | `/dataflows/start`                                                                                                                                                     |
+| **Request**     | [`DataFlowStartMessage`](#dataflowstartmessage)                                                                                                                        |
+| **Response**    | `HTTP 200` with a [`DataFlowStatusMessage`](#dataflowstatusmessage) OR `HTTP 202` with a [`DataFlowStatusMessage`](#dataflowstatusmessage) OR `HTTP 4xx Client Error`. |
 
 ##### DataFlowStartMessage
 
@@ -553,7 +547,7 @@ The `resume` request signals to the [=Data Plane=] to resume a data transfer.
 | **HTTP Method** | `POST`                                                                                         |
 | **URL Path**    | `/dataflows/:id/resume`                                                                        |
 | **Request**     | [`DataFlowResumeMessage`](#dataflowresumemessage)                                              |
-| **Response**    | `HTTP 200` with a [`DataFlowStatusMessage`](#DataFlowStatusMessage) OR `HTTP 4xx Client Error` |
+| **Response**    | `HTTP 200` with a [`DataFlowStatusMessage`](#dataflowstatusmessage) OR `HTTP 4xx Client Error` |
 
 ##### DataFlowResumeMessage
 
@@ -649,34 +643,34 @@ The Control Plane Endpoint is used by the [=Data Plane=] to make state transitio
 
 The `prepared` request signals to the [=Control Plane=] that the [=Data Flow=] is in the PREPARED state.
 
-|                 |                                                       |
-| --------------- | ----------------------------------------------------- |
-| **HTTP Method** | `POST`                                                |
-| **URL Path**    | `/transfers/:transferId/dataflow/prepared`            |
-| **Request**     | [`DataFlowStatusMessage`](#DataFlowStatusMessage) |
-| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`                 |
+|                 |                                                   |
+| --------------- |---------------------------------------------------|
+| **HTTP Method** | `POST`                                            |
+| **URL Path**    | `/transfers/:transferId/dataflow/prepared`        |
+| **Request**     | [`DataFlowStatusMessage`](#dataflowstatusmessage) |
+| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`             |
 
 #### Started
 
 The `started` request signals to the [=Control Plane=] that the [=Data Flow=] is in the STARTED state.
 
-|                 |                                                       |
-| --------------- | ----------------------------------------------------- |
-| **HTTP Method** | `POST`                                                |
-| **URL Path**    | `/transfers/:transferId/dataflow/started`             |
-| **Request**     | [`DataFlowStatusMessage`](#DataFlowStatusMessage) |
-| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`                 |
+|                 |                                                   |
+| --------------- |---------------------------------------------------|
+| **HTTP Method** | `POST`                                            |
+| **URL Path**    | `/transfers/:transferId/dataflow/started`         |
+| **Request**     | [`DataFlowStatusMessage`](#dataflowstatusmessage) |
+| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`             |
 
 #### Completed
 
 The `completed` request signals to the [=Control Plane=] that the [=Data Flow=] is in the COMPLETED state.
 
-|                 |                                                       |
-| --------------- | ----------------------------------------------------- |
-| **HTTP Method** | `POST`                                                |
-| **URL Path**    | `/transfers/:transferId/dataflow/completed`           |
-| **Request**     | [`DataFlowStatusMessage`](#DataFlowStatusMessage)     |
-| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`                 |
+|                 |                                                   |
+| --------------- |---------------------------------------------------|
+| **HTTP Method** | `POST`                                            |
+| **URL Path**    | `/transfers/:transferId/dataflow/completed`       |
+| **Request**     | [`DataFlowStatusMessage`](#dataflowstatusmessage) |
+| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`             |
 
 #### Errored
 
@@ -976,21 +970,17 @@ sequenceDiagram
     participant cp as Control Plane
     participant didp as Data Plane<br>Authorization Server
     participant dp as Data Plane
-
     rect rgb(223, 223, 225)
         coord ->> cidp: OAuth Client Credentials Flow
         cidp ->> coord: Coord token
     end
-
     coord ->> cidp: DCR (using coord token)
     cidp ->> coord: Access Token
     coord ->> dp: Register Control Plane (provide DCR-generared Access Token)
-
     rect rgb(223, 223, 225)
         coord ->> cidp: OAuth Client Credentials Flow
         cidp ->> coord: Coord token
     end
-
     coord ->> didp: DCR (using coord token)
     didp ->> coord: Access Token
     coord ->> cp: Register Data Plane (provide DCR Access Token)
