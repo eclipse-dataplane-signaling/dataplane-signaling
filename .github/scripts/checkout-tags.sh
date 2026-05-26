@@ -1,26 +1,26 @@
 #!/bin/bash
 
-mkdir -p HEAD
-mv ./specifications/schemas .
-mv * HEAD
+set -e
+
+GENERATE_SCRIPT="$(dirname "${BASH_SOURCE[0]}")/generate-swagger-ui.sh"
+
+npm install --prefix /tmp/swagger-ui swagger-ui-dist --silent
+
+checkout() {
+  local ref="$1"
+  local dir="$2"
+  echo "Processing $ref -> $dir"
+  git -c advice.detachedHead=false clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git --depth 1 --branch "$ref" --quiet "$dir/clone"
+  for item in "$dir/clone"/*; do mv "$item" "$dir/"; done
+  rm -rf "$dir/clone"
+  "$GENERATE_SCRIPT" "$dir"
+}
 
 git fetch --all --tags
-tags_string=$(git tag)
-echo got tag string
-echo $tags_string
-tags_array=($tags_string)
+current_branch=$(git rev-parse --abbrev-ref HEAD)
 
-for tag in "${tags_array[@]}"
-do
-  echo starting with tag $tag
-  mkdir $tag
-  cd $tag
-  git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git --depth 1 --branch ${tag} --quiet
-  pwd
-  mv ./dataplane-signaling/* .
-  mv ./specifications/schemas .
-  rm -rf dataplane-signaling
-  cd ..
+checkout "$current_branch" HEAD
+
+for tag in $(git tag); do
+  checkout "$tag" "$tag"
 done
-
-pwd
