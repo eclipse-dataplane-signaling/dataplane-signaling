@@ -12,6 +12,7 @@ checkout() {
   echo "Processing $ref -> $dir"
   git -c advice.detachedHead=false clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git --depth 1 --branch "$ref" --quiet "$dir/clone"
   for item in "$dir/clone"/*; do mv "$item" "$dir/"; done
+  [ -d "$dir/specifications/schemas" ] && mv "$dir/specifications/schemas" "$dir/schemas" # move schemas folder in the root, if it exist
   rm -rf "$dir/clone"
   "$GENERATE_SCRIPT" "$dir"
 }
