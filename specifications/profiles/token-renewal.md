@@ -1,4 +1,4 @@
-## 1. Introduction
+## Token Renewal
 
 When a data transfer is a pull transfer, the requesting data consumer (the client) may receive an access token in
 the start message that must be presented to the provider data plane. Data Plane Signaling does not mandate the token
@@ -18,7 +18,7 @@ The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL 
 RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in [RFC 8174]
 (https://datatracker.ietf.org/doc/html/rfc8174).
 
-## 2. The Refresh Token
+## The Refresh Token
 
 > This section is normative.
 
@@ -77,19 +77,19 @@ property is present and if the token has expired. If the token has expired, the 
 to obtain a new access token using the `refreshToken` according to the OAuth 2.0 `refresh_token` grant type. The new
 access token SHOULD then be used for subsequent data requests.
 
-### 2.1 Sender-Constrained Refresh Tokens
+### Sender-Constrained Refresh Tokens
 
 The refresh token is an opaque string that MUST be constrained to the identity of the data consumer. When generating
 a sender-constrained refresh token, the provider MUST bind it to the requesting participant using the latter's DID-based
 identity as defined
-by [DCP](https://eclipse-dataspace-dcp.github.io/decentralized-claims-protocol/v1.0.1/).  [Section 3.2](#3.2-provider-request-validation)
+by [DCP](https://eclipse-dataspace-dcp.github.io/decentralized-claims-protocol/v1.0.1/).  [Section 3.2](#provider-request-validation)
 defines how refresh token requests are authenticated using a proof-of-possession scheme.
 
-## 3. The Refresh Request
+## The Refresh Request
 
 The client sends refresh token requests to the provider's refresh endpoint using the OAuth 2 `refresh_token` grant
 type. A non-normative example is as follows. the bearer token is a JWT signed by the client as defined
-in [Section 3.1](#3.1-client-authentication):
+in [Section 3.1](#client-authentication):
 
 ```
 POST /token?grant_type=refresh_token&refresh_token=dFds4UOlH1QP7Fj3OkOAxM HTTP/1.1
@@ -100,7 +100,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3O
 
 Refresh requests MUST be sent over TLS/HTTPS.
 
-### 3.1. Client Authentication
+### Client Authentication
 
 The client making a refresh token request MUST use the bearer tokens as defined
 in [RFC6750.](https://datatracker.ietf.org/doc/html/rfc6750). The client bearer token is a JWT conforming to the
@@ -117,7 +117,7 @@ The data consumer SHOULD support the newly issued refresh token rotation which m
 token in case of subsequent requests with the same refresh token. In that case the client SHOULD implement a mechanism
 to prevent redundant usage of the same refresh token and instead use the refresh token after the rotation.
 
-### 3.2. Provider Request Validation
+### Provider Request Validation
 
 The provider authorization server backing the refresh endpoint MUST verify the refresh request using the signed
 client JWT following these steps:
@@ -130,7 +130,7 @@ client JWT following these steps:
 Authorization servers SHOULD implement the additional recommendations outlined
 in [OAuth 2.0 Security Best Current Practice](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics#section-4.14)
 
-### 3.3. The Refresh Response
+### The Refresh Response
 
 If validated and authorized, the authorization server MUST issue an access token as described in
 the [OAuth 2 specification](https://datatracker.ietf.org/doc/html/rfc6749#section-5.1). Note that the authorization
