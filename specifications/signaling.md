@@ -1016,7 +1016,7 @@ not enumerate Transfer Type Profiles; the registry is the authoritative source.
 Each Transfer Type Profile MUST:
 
 1. **Be identified by a fully-expanded URL.** Each profile is rooted at a single absolute URL (the **profile URL**)
-   under which it is published.
+   under which a human-readable spec document is published.
 
 2. **Declare one or more `transferType` values.** A profile MUST support at least one of the `push` or `pull`
    directions, and MAY support both. Each supported direction is exposed as a `transferType` value formed by appending
