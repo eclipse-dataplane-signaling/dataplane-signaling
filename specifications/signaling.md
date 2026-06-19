@@ -1,50 +1,51 @@
 # Data Plane Signaling
 
-Data Plane Signaling is an interoperable protocol and API used by connector control plane and data plane services to 
-execute data transfers. Its goal is to enable an ecosystem of compatible control plane and data plane implementations 
+Data Plane Signaling is an interoperable protocol and API used by connector control plane and data plane services to
+execute data transfers. Its goal is to enable an ecosystem of compatible control plane and data plane implementations
 that can be combined to meet the requirements of different dataspace use cases.
 
 ## Terminology
 
 The following terms are used to describe concepts in this specification.
 
-- <dfn>Connector</dfn>: Software services that manage the exchange of data between a provider and consumer as defined by the DSP
-  Specification.
+- <dfn>Connector</dfn>: Software services that manage the exchange of data between a provider and consumer as defined by
+  the DSP Specification.
 - <dfn>Control Plane</dfn>: The [=Connector=] services that implement the DSP protocol.
 - <dfn>Data Flow</dfn>: The exchange of data belonging to a [=Dataset=] between a provider and consumer [=Data Plane=].
 - <dfn>Data Plane</dfn>: The [=Connector=] services that implement a [=Data Flow=] using a [=Wire Protocol=].
 - <dfn>Dataset</dfn>: Data or a technical service that can be shared as defined by the DSP Specification.
 - <dfn>Participant</dfn>: A dataspace member as defined by the DSP Specification.
-- <dfn>Transfer Process</dfn>: A set of interactions between two connectors that provide access to a dataset as defined by the DSP
-  Specification.
+- <dfn>Transfer Process</dfn>: A set of interactions between two connectors that provide access to a dataset as defined
+  by the DSP Specification.
 - <dfn>Wire Protocol</dfn>: A protocol such as MQTT, AMQP, or an HTTP REST API that governs the exchange of data.
 
 ## Base Concepts
 
-The DSP Specification models consumer access to a provider dataset in the [=Control Plane=] as a [=Transfer
-Process=](https://eclipse-dataspace-protocol-base.github.io/DataspaceProtocol/2025-1/#dfn-transfer-process). The
+The DSP Specification models consumer access to a provider dataset in the [=Control Plane=] as
+a [=Transfer Process=](https://eclipse-dataspace-protocol-base.github.io/DataspaceProtocol/2025-1/#dfn-transfer-process).
+The
 [=Wire Protocol=] operations in the [=Data Plane=] that facilitate data exchange are modeled as a [=Data Flow=]. A
 [=Data Flow=] represents the current state of the physical data transfer.
 
 ### Data Transfer Types
 
-A [=Data Flow=] is one of two data transfer types as defined in the [DSP
-Specification](https://eclipse-dataspace-protocol-base.github.io/DataspaceProtocol/2025-1/#data-transfer-types):
+A [=Data Flow=] is one of two data transfer types as defined in
+the [DSP Specification](https://eclipse-dataspace-protocol-base.github.io/DataspaceProtocol/2025-1/#data-transfer-types):
 
 | Push            | Pull              |
-| --------------- | ----------------- |
+|-----------------|-------------------|
 | Client Endpoint | Provider Endpoint |
 
 Examples of push data transfers include an event stream published to a channel supplied by the consumer, or a file sent
 to a consumer HTTP endpoint.
 
-Examples of pull data transfers include an event stream that is published to a provider-supplied channel and accessed
-by a consumer subscriber, or a provider HTTP REST API invoked by a consumer client.
+Examples of pull data transfers include an event stream that is published to a provider-supplied channel and accessed by
+a consumer subscriber, or a provider HTTP REST API invoked by a consumer client.
 
 #### Finite vs Non-Finite Data
 
-DSP further distinguishes [Finite and Non-Finite
-Data](https://eclipse-dataspace-protocol-base.github.io/DataspaceProtocol/2025-1/#finite-and-non-finite-data).
+DSP further
+distinguishes [Finite and Non-Finite Data](https://eclipse-dataspace-protocol-base.github.io/DataspaceProtocol/2025-1/#finite-and-non-finite-data).
 Finite data has a demarcated end, for example, a file or set of files. Non-Finite data has no specified end. It could be
 an ongoing event stream or an HTTP REST API.
 
@@ -177,17 +178,17 @@ Note the transition to the PREPARED and STARTED states may be completed synchron
 response to the consumer request. Or, the transitions may be completed asynchronously, and the response delivered as a
 callback.
 
-Note also, that the response signals (`/prepared`, `/started`, `/completed`) only occur in [asynchronous
-transitions](#asynchronous-transitions). Implementations that use [synchronous operations](#synchronous-operation) may
-simply return the appropriate HTTP success codes.
+Note also, that the response signals (`/prepared`, `/started`, `/completed`) only occur
+in [asynchronous transitions](#asynchronous-transitions). Implementations that
+use [synchronous operations](#synchronous-operation) may simply return the appropriate HTTP success codes.
 
 ### Pull Protocol Messaging
 
 The pull transfer type uses a wire protocol that allows the consumer to initiate the transfer by sending a request to a
-provider endpoint. The flow is similar to the push type, except the `DataAddress` is generated by the provider [=Data
-Plane=] as part of the transition to the STARTED state. The consumer [=Data Plane=] receives the `DataAddress` from its
-control plane via a start message and can initiate the wire protocol. This sequence is illustrated in the following 
-diagram:
+provider endpoint. The flow is similar to the push type, except the `DataAddress` is generated by the
+provider [=Data Plane=] as part of the transition to the STARTED state. The consumer [=Data Plane=] receives the
+`DataAddress` from its control plane via a start message and can initiate the wire protocol. This sequence is
+illustrated in the following diagram:
 
 ```mermaid
 sequenceDiagram
@@ -213,10 +214,10 @@ DSP messages are shown with a dotted line.
 
 ### Data Flow Suspension/Resumption
 
-A STARTED Data Flow can be suspended at any time and resumed later. While a Data Flow is in the SUSPENDED state, no data 
+A STARTED Data Flow can be suspended at any time and resumed later. While a Data Flow is in the SUSPENDED state, no data
 is transferred. The `resume` signal can only be triggered by the same party that initiated the `suspend` signal.
 
-The following sequence diagrams illustrate the different flow types (PUSH and PULL) and identify whether the suspension 
+The following sequence diagrams illustrate the different flow types (PUSH and PULL) and identify whether the suspension
 is initiated by the Provider or the Consumer:
 
 #### Provider Push - Provider Suspend/Start
@@ -235,7 +236,6 @@ sequenceDiagram
       CCP-->>PCP: TransferStartMessage + DataAddress (DSP)
       PCP->>PDP: DataFlowResumeMessage + DataAddress 
 ```
-
 
 #### Provider Push - Consumer Suspend/Start
 
@@ -303,12 +303,12 @@ The Data Plane Endpoint is used by the [=Control Plane=] to manage [=Data Flows=
 
 The `prepare` request signals to the [=Data Plane=] to initialize a [=Data Flow=] and any resources required for data
 transfer. The request results in a state machine transition to PREPARING or PREPARED. If the state machine transitions
-to PREPARING, the [=Data Plane=] MUST return HTTP 202 Accepted with the `Location` header set to the [data flow status
-relative URL](#status) and a message body containing a `DataFlowStatusMessage`. If the state machine transitions to
-PREPARED, the [=Data Plane=] MUST return HTTP 200 OK and a `DataFlowStatusMessage`.
+to PREPARING, the [=Data Plane=] MUST return HTTP 202 Accepted with the `Location` header set to
+the [data flow status relative URL](#status) and a message body containing a `DataFlowStatusMessage`. If the state
+machine transitions to PREPARED, the [=Data Plane=] MUST return HTTP 200 OK and a `DataFlowStatusMessage`.
 
 |                 |                                                                                                                                                                       |
-| --------------- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **HTTP Method** | `POST`                                                                                                                                                                |
 | **URL Path**    | `/dataflows/prepare`                                                                                                                                                  |
 | **Request**     | [`DataFlowPrepareMessage`](#dataflowpreparemessage)                                                                                                                   |
@@ -316,21 +316,21 @@ PREPARED, the [=Data Plane=] MUST return HTTP 200 OK and a `DataFlowStatusMessag
 
 ##### DataFlowPrepareMessage
 
-|                |                                                                                                                        |
-|----------------|------------------------------------------------------------------------------------------------------------------------|
-| **Schema**     | [JSON Schema](./schemas/DataFlowPrepareMessage.schema.json)                                                            |
-| **Required**   | - `messageId`: A unique identifier for the message.                                                                    |
-|                | - `participantId`: The participant ID of the sender as specified in the Dataspace Protocol.                            |
-|                | - `counterPartyId`: The participant ID of the counterparty as specified in the Dataspace Protocol.                     |
-|                | - `dataspaceContext`: An identifier for the dataspace context for when the data plane is used in multiple data spaces. |
-|                | - `processId`: The transfer process ID as assigned by the control plane for correlation.                               |
-|                | - `agreementId`: The contract agreement ID that was negotiated by the control plane.                                   |
-|                | - `datasetId`: The ID of the dataset in the DCAT Catalog which is to be transferred.                                   |
-|                | - `callbackAddress`: A URL where the control plane receives callbacks.                                                 |
-|                | - `transferType`: The type of data transfer. See [data transfer types](#data-transfer-types).                          |
-|                | - `claims`: An object containing the DSP claims of the counterparty as verified by the control plane.                  |
-| **Optional**:  | - `labels`: an array of strings that represent different flavours of data flow                                         |
-|                | - `metadata`: An object containing information that could be used by the data plane during preparation.                |
+|               |                                                                                                                        |
+|---------------|------------------------------------------------------------------------------------------------------------------------|
+| **Schema**    | [JSON Schema](./schemas/DataFlowPrepareMessage.schema.json)                                                            |
+| **Required**  | - `messageId`: A unique identifier for the message.                                                                    |
+|               | - `participantId`: The participant ID of the sender as specified in the Dataspace Protocol.                            |
+|               | - `counterPartyId`: The participant ID of the counterparty as specified in the Dataspace Protocol.                     |
+|               | - `dataspaceContext`: An identifier for the dataspace context for when the data plane is used in multiple data spaces. |
+|               | - `processId`: The transfer process ID as assigned by the control plane for correlation.                               |
+|               | - `agreementId`: The contract agreement ID that was negotiated by the control plane.                                   |
+|               | - `datasetId`: The ID of the dataset in the DCAT Catalog which is to be transferred.                                   |
+|               | - `callbackAddress`: A URL where the control plane receives callbacks.                                                 |
+|               | - `transferType`: The type of data transfer. See [data transfer types](#data-transfer-types).                          |
+|               | - `claims`: An object containing the DSP claims of the counterparty as verified by the control plane.                  |
+| **Optional**: | - `labels`: an array of strings that represent different flavours of data flow                                         |
+|               | - `metadata`: An object containing information that could be used by the data plane during preparation.                |
 
 The following is a non-normative example of a `DataFlowPrepareMessage`:
 
@@ -344,12 +344,15 @@ The following is a non-normative example of a `DataFlowPrepareMessage`:
   "agreementId": "test-agreement-id",
   "datasetId": "asset-id",
   "callbackAddress": "https://example.com/provider/callback",
-  "transferType": "com.test.s3-PUSH",
+  "transferType": "https://w3id.org/dspace-sig/profile/s3-push",
   "claims": {
     "membership": "active",
     "sub": "subject"
   },
-  "labels": ["gold", "blue"],
+  "labels": [
+    "gold",
+    "blue"
+  ],
   "metadata": {
     "bucketName": "destinationBucket",
     "region": "westeurope",
@@ -383,14 +386,15 @@ The following is a non-normative example of a `DataFlowStatusMessage`:
 
 #### Start
 
-The `start` request signals to the provider [=Data Plane=] to begin a data transfer. The request results in a state machine
-transition to STARTING or STARTED. If the state machine transitions to STARTING, the [=Data Plane=] MUST return HTTP 202
-Accepted with the `Location` header set to the [data flow status relative URL](#status) and a message body containing a
+The `start` request signals to the provider [=Data Plane=] to begin a data transfer. The request results in a state
+machine transition to STARTING or STARTED. If the state machine transitions to STARTING, the [=Data Plane=] MUST return
+HTTP 202 Accepted with the `Location` header set to the [data flow status relative URL](#status) and a message body
+containing a
 `DataFlowStatusMessage`. If the state machine transitions to STARTED, the [=Data Plane=] MUST return HTTP 200 OK and a
 `DataFlowStatusMessage`.
 
 |                 |                                                                                                                                                                        |
-| --------------- |------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **HTTP Method** | `POST`                                                                                                                                                                 |
 | **URL Path**    | `/dataflows/start`                                                                                                                                                     |
 | **Request**     | [`DataFlowStartMessage`](#dataflowstartmessage)                                                                                                                        |
@@ -431,7 +435,7 @@ provider and must be accessed by the provider data plane using an API Key:
   "agreementId": "test-agreement-id",
   "datasetId": "asset-id",
   "callbackAddress": "https://example.com/provider/callback",
-  "transferType": "com.test.http-PULL",
+  "transferType": "https://w3id.org/dspace-sig/profile/http-pull",
   "claims": {
     "membership": "active",
     "sub": "subject"
@@ -450,7 +454,10 @@ provider and must be accessed by the provider data plane using an API Key:
       }
     ]
   },
-  "labels": ["gold", "blue"],
+  "labels": [
+    "gold",
+    "blue"
+  ],
   "metadata": {
     "bucketName": "sourceBucket",
     "region": "westeurope",
@@ -461,10 +468,10 @@ provider and must be accessed by the provider data plane using an API Key:
 
 #### Started Notification
 
-The `started` request signals to the consumer [=Data Plane=] that a data transmission has begun and that a [state
-transition](#data-flow-state-machine) should be triggered. For pull transfers, this indicates the consumer [=Data
-Plane=] may fetch data. For push transfers, this indicates the provider has already started sending data. The request
-results in a state machine transition to STARTED, and the [=Data Plane=] MUST return HTTP 200 OK.
+The `started` request signals to the consumer [=Data Plane=] that a data transmission has begun and that
+a [state transition](#data-flow-state-machine) should be triggered. For pull transfers, this indicates the
+consumer [=Data Plane=] may fetch data. For push transfers, this indicates the provider has already started sending
+data. The request results in a state machine transition to STARTED, and the [=Data Plane=] MUST return HTTP 200 OK.
 
 This signal occurs exclusively on the consumer side.
 
@@ -515,7 +522,7 @@ The following is a non-normative example of a `DataFlowStartedNotificationMessag
 The `suspend` request signals to the [=Data Plane=] to suspend a data transfer.
 
 |                 |                                                     |
-| --------------- | --------------------------------------------------- |
+|-----------------|-----------------------------------------------------|
 | **HTTP Method** | `POST`                                              |
 | **URL Path**    | `/dataflows/:id/suspend`                            |
 | **Request**     | [`DataFlowSuspendMessage`](#dataflowsuspendmessage) |
@@ -524,7 +531,7 @@ The `suspend` request signals to the [=Data Plane=] to suspend a data transfer.
 ##### DataFlowSuspendMessage
 
 |              |                                                                       |
-| ------------ | --------------------------------------------------------------------- |
+|--------------|-----------------------------------------------------------------------|
 | **Schema**   | [JSON Schema](./schemas/DataFlowSuspendMessage.schema.json)           |
 | **Required** | - `messageId`: A unique identifier for the message.                   |
 | **Optional** | - `reason`: A description of the reason for suspending the data flow. |
@@ -571,7 +578,7 @@ The following is a non-normative example of a `DataFlowResumeMessage`:
 The `terminate` request signals to the [=Data Plane=] to terminate a data transfer.
 
 |                 |                                                         |
-| --------------- | ------------------------------------------------------- |
+|-----------------|---------------------------------------------------------|
 | **HTTP Method** | `POST`                                                  |
 | **URL Path**    | `/dataflows/:id/terminate`                              |
 | **Request**     | [`DataFlowTerminateMessage`](#dataflowterminatemessage) |
@@ -580,7 +587,7 @@ The `terminate` request signals to the [=Data Plane=] to terminate a data transf
 ##### DataFlowTerminateMessage
 
 |              |                                                                        |
-| ------------ | ---------------------------------------------------------------------- |
+|--------------|------------------------------------------------------------------------|
 | **Schema**   | [JSON Schema](./schemas/DataFlowTerminateMessage.schema.json)          |
 | **Required** | - `messageId`: A unique identifier for the message.                    |
 | **Optional** | - `reason`: A description of the reason for terminating the data flow. |
@@ -597,11 +604,12 @@ The following is a non-normative example of a `DataFlowTerminateMessage`:
 #### Completed
 
 The `completed` request signals to the [=Data Plane=] that a data transmission has completed normally. For consumer pull
-transmissions, the `completed` request is sent to the provider data plane. For provider push transmissions the `completed`
+transmissions, the `completed` request is sent to the provider data plane. For provider push transmissions the
+`completed`
 signal is sent to the consumer data plane.
 
 |                 |                                       |
-| --------------- |---------------------------------------|
+|-----------------|---------------------------------------|
 | **HTTP Method** | `POST`                                |
 | **URL Path**    | `/dataflows/:id/completed`            |
 | **Request**     | Empty body                            |
@@ -644,7 +652,7 @@ The Control Plane Endpoint is used by the [=Data Plane=] to make state transitio
 The `prepared` request signals to the [=Control Plane=] that the [=Data Flow=] is in the PREPARED state.
 
 |                 |                                                   |
-| --------------- |---------------------------------------------------|
+|-----------------|---------------------------------------------------|
 | **HTTP Method** | `POST`                                            |
 | **URL Path**    | `/transfers/:transferId/dataflow/prepared`        |
 | **Request**     | [`DataFlowStatusMessage`](#dataflowstatusmessage) |
@@ -655,7 +663,7 @@ The `prepared` request signals to the [=Control Plane=] that the [=Data Flow=] i
 The `started` request signals to the [=Control Plane=] that the [=Data Flow=] is in the STARTED state.
 
 |                 |                                                   |
-| --------------- |---------------------------------------------------|
+|-----------------|---------------------------------------------------|
 | **HTTP Method** | `POST`                                            |
 | **URL Path**    | `/transfers/:transferId/dataflow/started`         |
 | **Request**     | [`DataFlowStatusMessage`](#dataflowstatusmessage) |
@@ -666,7 +674,7 @@ The `started` request signals to the [=Control Plane=] that the [=Data Flow=] is
 The `completed` request signals to the [=Control Plane=] that the [=Data Flow=] is in the COMPLETED state.
 
 |                 |                                                   |
-| --------------- |---------------------------------------------------|
+|-----------------|---------------------------------------------------|
 | **HTTP Method** | `POST`                                            |
 | **URL Path**    | `/transfers/:transferId/dataflow/completed`       |
 | **Request**     | [`DataFlowStatusMessage`](#dataflowstatusmessage) |
@@ -688,8 +696,8 @@ due to a policy violation and closes the socket, the consumer data plane may ind
 protocol error and send an `errored` message. Since these terminations cannot be correlated, propagating both as
 TERMINATED events would violate the DSP constraint that a transfer process cannot transition from TERMINATED to
 TERMINATED. [=Wire Protocol=] specifications MUST define what constitutes abnormal termination; for example, a socket
-close without a prior terminated message may be interpreted as an error, while a terminated message followed by a
-socket close is not.
+close without a prior terminated message may be interpreted as an error, while a terminated message followed by a socket
+close is not.
 
 |                 |                                           |
 |-----------------|-------------------------------------------|
@@ -702,18 +710,18 @@ socket close is not.
 
 The [=Data Plane=] MAY request the [=Control Plane=] for the agreement that is associated with the transfer.
 
-|                 |                                                                                      |
-|-----------------|--------------------------------------------------------------------------------------|
-| **HTTP Method** | `GET`                                                                                |
-| **URL Path**    | `/transfers/:transferId/agreement`                                                   |
-| **Request**     |                                                                                      |
+|                 |                                                                                       |
+|-----------------|---------------------------------------------------------------------------------------|
+| **HTTP Method** | `GET`                                                                                 |
+| **URL Path**    | `/transfers/:transferId/agreement`                                                    |
+| **Request**     |                                                                                       |
 | **Response**    | `HTTP 200` with an [AgreementResponse](#agreementresponse) OR `HTTP 4xx Client Error` |
 
 ##### AgreementResponse
 
-|              |                                                        |
-|--------------|--------------------------------------------------------|
-| **Schema**   | [JSON Schema](./schemas/AgreementResponse.schema.json) |
+|            |                                                        |
+|------------|--------------------------------------------------------|
+| **Schema** | [JSON Schema](./schemas/AgreementResponse.schema.json) |
 
 Note that the agreement response schema reuses the `Agreement` schema definition as specified in the DSP.
 
@@ -756,23 +764,28 @@ The following is a non-normative example of a Data Plane registration data objec
 {
   "dataplaneId": "7d6fda82-98b6-4738-a874-1f2c003a79ff",
   "endpoint": "https://example.com/signaling",
-  "transferTypes": ["com.test.http-PULL"],
+  "transferTypes": [
+    "https://w3id.org/dspace-sig/profile/http-pull"
+  ],
   "authorization": {
     "type": "..."
   },
-  "labels": ["label1", "label2"]
+  "labels": [
+    "label1",
+    "label2"
+  ]
 }
 ```
 
 ##### Transfer Types
 
-Note that standardization of the transfer types is not in the scope of this specification. Dataspaces may define 
+Note that standardization of the transfer types is not in the scope of this specification. Dataspaces may define
 specific transfer types.
 
 ##### Authorization Object
 
-The authorization object contains one mandatory property, `type`, which identifies a supported Authorization 
-Profile, and MAY include additional properties specific to that profile.                                     
+The authorization object contains one mandatory property, `type`, which identifies a supported Authorization Profile,
+and MAY include additional properties specific to that profile.
 
 #### Configuration-based Registration
 
@@ -790,11 +803,11 @@ A [=Control Plane=] implementation MAY support registration through an endpoint.
 | **Request**     | [`DataPlaneRegistrationMessage`]      |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error` |
 
-The `DataPlaneRegistrationMessage` adheres to the [Registration type](#the-data-plane-registration-message) 
-structure.  The endpoint MAY require an authorization mechanism such as OAuth 2.0 or API Key. This is 
+The `DataPlaneRegistrationMessage` adheres to the [Registration type](#the-data-plane-registration-message)
+structure. The endpoint MAY require an authorization mechanism such as OAuth 2.0 or API Key. This is
 implementation-specific.
 
-Note that the endpoint is relative and may include additional context information, such as a subpath indicating the 
+Note that the endpoint is relative and may include additional context information, such as a subpath indicating the
 participant ID to which the registration applies or the API version.
 
 Subsequent calls to this endpoint with the same `dataplaneId` will update the registration.
@@ -838,7 +851,7 @@ The following is a non-normative example of a Control Plane registration data ob
 
 ##### Authorization Object
 
-The authorization object contains one mandatory property, `type`, which identifies a supported Authorization Profile, 
+The authorization object contains one mandatory property, `type`, which identifies a supported Authorization Profile,
 and MAY include additional properties specific to that profile.
 
 #### Configuration-based Registration
@@ -857,10 +870,10 @@ A [=Data Plane=] implementation MAY support registration through an endpoint. Th
 | **Request**     | [`ControlPlaneRegistrationMessage`]   |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error` |
 
-The `ControlPlaneRegistrationMessage` adheres to the [Registration type](#the-control-plane-registration-type) structure.
+The `ControlPlaneRegistrationMessage` adheres to the [Registration type](#the-control-plane-registration-type)structure.
 The endpoint MAY require an authorization mechanism such as OAuth 2.0 or API Key. This is implementation-specific.
 
-Note that the endpoint is relative and may include additional context information, such as a subpath indicating the 
+Note that the endpoint is relative and may include additional context information, such as a subpath indicating the
 participant ID to which the registration applies.
 
 Subsequent calls of this endpoint with the same `controlplaneId` will update the registration.
@@ -879,27 +892,27 @@ follows:
 ### Authorization Profiles
 
 This section describes an Authorization profile that can be used to authorize a [=Data Plane=] or [=Control Plane=]
-registration. Implementations SHOULD use this profile to ensure minimum interoperability and avoid to define custom
+registration. Implementations SHOULD use this profile to ensure minimum interoperability and avoid defining custom
 authorization profiles.
 
 #### OAuth 2 Client Credentials Grant
 
-A [=Control Plane=] or [=Data Plane=] that supports the OAuth 2.0 Client Credentials Grant as is defined in [RFC
-6749](https://tools.ietf.org/html/rfc6749#section-4.4) uses an `oauth2_client_credentials` authorization profile
+A [=Control Plane=] or [=Data Plane=] that supports the OAuth 2.0 Client Credentials Grant as is defined
+in [RFC 6749](https://tools.ietf.org/html/rfc6749#section-4.4) uses an `oauth2_client_credentials` authorization profile
 in its `authorization` object. This object contains the following properties:
 
-|              |                                                                                                                                                                                                                     |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Schema**   | [JSON Schema](./resources/TBD)                                                                                                                                                                                      |
-| **Required** | - `type`: Must be `oauth2_client_credentials`.                                                                                                                                                                      |
-|              | - `tokenEndpoint`: The URL of the authorization server's token endpoint as defined in [RFC6749](https://datatracker.ietf.org/doc/html/rfc6749).                                                                     |
-|              | - `clientId`: The OAuth2 client id used for the Client Credentials Grant.                                                                                                                                           |
-|              | - `clientSecret`: The OAuth2 client secret used for the Client Credentials Grant.                                                                                                                                   |
-| **Optional** | - `jwks`: A JSON Web Key Set ([RFC7517](https://datatracker.ietf.org/doc/html/rfc7517)) containing the public key(s) the receiving party MUST use to verify tokens issued by this party.                            |
-|              | - `jwksUri`: A URL pointing to a JSON Web Key Set endpoint. The receiving party MAY fetch and cache the JWKS from this URL to verify tokens issued by this party.                                                   |
+|              |                                                                                                                                                                                          |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Schema**   | [JSON Schema](./resources/TBD)                                                                                                                                                           |
+| **Required** | - `type`: Must be `oauth2_client_credentials`.                                                                                                                                           |
+|              | - `tokenEndpoint`: The URL of the authorization server's token endpoint as defined in [RFC6749](https://datatracker.ietf.org/doc/html/rfc6749).                                          |
+|              | - `clientId`: The OAuth2 client id used for the Client Credentials Grant.                                                                                                                |
+|              | - `clientSecret`: The OAuth2 client secret used for the Client Credentials Grant.                                                                                                        |
+| **Optional** | - `jwks`: A JSON Web Key Set ([RFC7517](https://datatracker.ietf.org/doc/html/rfc7517)) containing the public key(s) the receiving party MUST use to verify tokens issued by this party. |
+|              | - `jwksUri`: A URL pointing to a JSON Web Key Set endpoint. The receiving party MAY fetch and cache the JWKS from this URL to verify tokens issued by this party.                        |
 
-The way `jwks` and `jwksUri` are managed is implementation specific, but generally speaking they should never used at the
-same time. If neither is provided, the receiving party skips signature verification. When a JWKS is present, the 
+The way `jwks` and `jwksUri` are managed is implementation specific, but generally speaking they should never used at
+the same time. If neither is provided, the receiving party skips signature verification. When a JWKS is present, the
 receiving party MUST use the key whose `kid` matches the `kid` header claim of the incoming JWT. If no `kid` is present,
 the receiving party MAY attempt verification with each key in the set.
 
@@ -943,10 +956,10 @@ The following is a non-normative example using a JWKS URI:
 
 ##### Token Claims
 
-Access tokens obtained via the Client Credentials Grant are self-signed JWTs. The issuing party signs the token with
-its own private key. If a `jwks` or `jwksUri` was provided during registration, the receiving party MUST verify the
-token signature using those public key(s). Otherwise, signature verification is skipped and verification is based
-solely on the claims contained in the token.
+Access tokens obtained via the Client Credentials Grant are self-signed JWTs. The issuing party signs the token with its
+own private key. If a `jwks` or `jwksUri` was provided during registration, the receiving party MUST verify the token
+signature using those public key (s). Otherwise, signature verification is skipped and verification is based solely on
+the claims contained in the token.
 
 The access token MUST be a JWT and MUST contain the following claims:
 
@@ -986,10 +999,68 @@ sequenceDiagram
     coord ->> cp: Register Data Plane (provide DCR Access Token)
 ```
 
-## Data Transfer Type Registry
+## Transfer Type Profile Registry
 
-Define how data transfer types can be registered with the data Plane Signaling project. One requirement is that they
-need to publish a Wire Protocol Signaling Specification. Define what the specification must contain.
+A **Transfer Type Profile** is the normative specification of a particular kind of data transfer supported by a
+[=Data Plane=]. It identifies a wire-protocol endpoint type, the transfer direction (s) it supports (push, pull, or
+both), and the message contents required to drive those transfers. Transfer Type Profiles are advertised by data planes
+during [registration](#data-plane-registration) via the `transferTypes` property, and referenced from
+`DataFlowPrepareMessage` and `DataFlowStartMessage` via the `transferType` property.
 
-### Wire Protocol Signaling Specification Requirements
+To ensure interoperability across implementations, every Transfer Type Profile MUST be published in the
+[Endpoint Type Registry](https://github.com/eclipse-dataplane-signaling/endpoint-type-registry). This specification does
+not enumerate Transfer Type Profiles; the registry is the authoritative source.
 
+### Transfer Type Profile Requirements
+
+Each Transfer Type Profile MUST:
+
+1. **Be identified by a fully-expanded URL.** Each profile is rooted at a single absolute URL (the **profile URL**)
+   under which a human-readable spec document is published.
+
+2. **Declare one or more `transferType` values.** A profile MUST support at least one of the `push` or `pull`
+   directions, and MAY support both. Each supported direction is exposed as a `transferType` value formed by appending
+   `-push` or `-pull` to the profile URL.
+
+   For example, a profile published at `https://w3id.org/dspace-sig/profile/http` that supports both directions declares
+   the values:
+
+    - `https://w3id.org/dspace-sig/profile/http-push`
+    - `https://w3id.org/dspace-sig/profile/http-pull`
+
+   A `transferType` value MUST be defined by exactly one Transfer Type Profile. Two profiles MUST NOT declare the same
+   `transferType` value. A profile that supports both `push` and `pull` MUST be specified as a single profile; the two
+   directions MUST NOT be split across separate profiles.
+
+3. **Define the `endpointType` and its `DataAddress` schema.** The profile MUST specify which `DataAddress`
+   `endpointProperties` are mandatory or optional for the `endpointType`, and the semantics of each property. Where push
+   and pull differ in the data they convey, the profile MUST specify those differences explicitly.
+
+4. **Specify `metadata` semantics, where applicable.** If the profile relies on `metadata` carried in
+   `DataFlowPrepareMessage` or `DataFlowStartMessage` from the [=Control Plane=] to the [=Data Plane=], it MUST define
+   the structure and semantics of those entries.
+
+5. **Specify `labels` semantics, where applicable.** If the profile assigns meaning to label values, it MUST define
+   them.
+
+6. **Publish JSON Schemas.** All objects defined or extended by the profile (for example, `DataAddress`, `metadata`
+   payloads) MUST be published as JSON Schemas that reference the corresponding base schemas in this specification.
+
+7. **Declare its scope.** A profile MUST declare whether it is:
+    - a **transport-protocol profile** — bound only to a wire protocol (e.g. HTTP, S3, Kafka), or
+    - a **usecase profile** — bound to a dataspace usecase that includes business semantics beyond transport. Usecase
+      profiles SHOULD reference an existing transport-protocol profile rather than redefining transport-level concerns,
+      to maximize reuse and cross-profile interoperability.
+
+### Relationship to Best Practices
+
+Non-normative guidance for authoring Transfer Type Profiles — architectural patterns, worked examples, and recommended
+conventions — is published in the
+[Data Plane Signaling Best Practices](https://github.com/eclipse-dataplane-signaling/best-practices) repository. Profile
+authors SHOULD follow that guidance; where it conflicts with this specification, this specification takes precedence.
+
+### Relationship to the Dataspace Protocol
+
+Transfer Type Profiles defined under this specification provide the `DataAddress` object referenced by DSP
+`Data Transfer` profiles. DSP-side JSON Schema definitions SHOULD point to the object definitions governed by the
+corresponding DPS Transfer Type Profile rather than redefining them.
