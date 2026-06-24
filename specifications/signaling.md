@@ -892,8 +892,8 @@ follows:
 ### Authorization Profiles
 
 This section describes Authorization Profiles that can be used to authorize a [=Data Plane=] or [=Control Plane=]
-registration. Implementations SHOULD use this profile to ensure minimum interoperability and avoid defining custom
-authorization profiles.
+registration. Implementations SHOULD use one of these profiles to ensure minimum interoperability and avoid defining 
+custom authorization profiles. All Authorization Profiles are optional and not mandatory.
 
 #### OAuth 2 Client Credentials Grant
 
