@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "title": "DataPlaneRegistrationMessage",
-  "required": ["dataplaneId", "endpoint", "transferTypes", "authorization"],
+  "required": ["dataplaneId", "endpoint", "profiles", "authorization"],
   "properties": {
     "dataplaneId": {
       "type": "string",
@@ -15,12 +15,12 @@
       "format": "uri",
       "examples": ["https://dataplane.example.com/api/v1/signaling"]
     },
-    "transferTypes": {
+    "profiles": {
       "type": "array",
-      "description": "A list of transfer types supported by the data plane",
+      "description": "A list of transfer profiles supported by the data plane",
       "items": {
         "type": "string",
-        "description": "The flow transfer type",
+        "description": "The flow transfer profile",
         "examples": ["com.test.http-pull"]
       },
       "examples": [

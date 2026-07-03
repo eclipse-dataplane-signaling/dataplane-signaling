@@ -1,6 +1,6 @@
-## HTTP Transfer Type Profile
+## HTTP Transfer Profile
 
-This profile defines a [Transfer Type Profile](../signaling.md#transfer-type-profile-registry) for transferring data
+This profile defines a [Transfer Profile](../signaling.md#transfer-profile-registry) for transferring data
 over HTTP. It is a **transport-protocol profile**: it is bound only to the HTTP wire protocol and does not define any
 dataspace usecase or business semantics beyond transport.
 
@@ -25,27 +25,27 @@ This profile is rooted at the following **profile URL**, under which this docume
 https://w3id.org/dspace-sig/profile/http
 ```
 
-## Transfer Types
+## Transfer Profiles
 
 > This section is normative.
 
-This profile declares the following `transferType` values, formed by appending `-push` and `-pull` to the profile URL:
+This profile declares the following `profile` values, formed by appending `-push` and `-pull` to the profile URL:
 
 - `https://w3id.org/dspace-sig/profile/http-push`
 - `https://w3id.org/dspace-sig/profile/http-pull`
 
-A [=Data Plane=] that supports this profile advertises one or both of these values in the `transferTypes` property of
+A [=Data Plane=] that supports this profile advertises one or both of these values in the `profiles` property of
 its [Data Plane Registration Message](../signaling.md#the-data-plane-registration-message). The same values are
-referenced from `DataFlowPrepareMessage` and `DataFlowStartMessage` via the `transferType` property.
+referenced from `DataFlowPrepareMessage` and `DataFlowStartMessage` via the `profile` property.
 
-A [=Data Plane=] MUST NOT advertise a `transferType` value for a direction it does not support.
+A [=Data Plane=] MUST NOT advertise a `profile` value for a direction it does not support.
 
 ## Endpoint Type and DataAddress
 
 > This section is normative.
 
 The `DataAddress` `endpointType` value identifies the transfer direction using the `-push` or `-pull` postfix and MUST
-be one of the two `transferType` values declared above:
+be one of the two `profile` values declared above:
 
 - For a pull transfer, the `endpointType` MUST be `https://w3id.org/dspace-sig/profile/http-pull`.
 - For a push transfer, the `endpointType` MUST be `https://w3id.org/dspace-sig/profile/http-push`.
