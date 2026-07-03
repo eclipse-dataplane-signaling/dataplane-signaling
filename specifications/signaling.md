@@ -327,7 +327,7 @@ machine transitions to PREPARED, the [=Data Plane=] MUST return HTTP 200 OK and 
 |               | - `agreementId`: The contract agreement ID that was negotiated by the control plane.                                   |
 |               | - `datasetId`: The ID of the dataset in the DCAT Catalog which is to be transferred.                                   |
 |               | - `callbackAddress`: A URL where the control plane receives callbacks.                                                 |
-|               | - `transferType`: The type of data transfer. See [data transfer types](#data-transfer-types).                          |
+|               | - `profile`: The type of data transfer. See [data transfer types](#data-transfer-types).                          |
 |               | - `claims`: An object containing the DSP claims of the counterparty as verified by the control plane.                  |
 | **Optional**: | - `labels`: an array of strings that represent different flavours of data flow                                         |
 |               | - `metadata`: An object containing information that could be used by the data plane during preparation.                |
@@ -344,7 +344,7 @@ The following is a non-normative example of a `DataFlowPrepareMessage`:
   "agreementId": "test-agreement-id",
   "datasetId": "asset-id",
   "callbackAddress": "https://example.com/provider/callback",
-  "transferType": "https://w3id.org/dspace-sig/profile/s3-push",
+  "profile": "https://w3id.org/dspace-sig/profile/s3-push",
   "claims": {
     "membership": "active",
     "sub": "subject"
@@ -413,7 +413,7 @@ containing a
 |              | - `agreementId`: The contract agreement ID that was negotiated by the control plane.                                                                                                        |
 |              | - `datasetId`: The ID of the dataset in the DCAT Catalog which is to be transferred.                                                                                                        |
 |              | - `callbackAddress`: A URL where the control plane receives callbacks.                                                                                                                      |
-|              | - `transferType`: The type of data transfer. See [data transfer types](#data-transfer-types).                                                                                               |
+|              | - `profile`: The type of data transfer. See [data transfer types](#data-transfer-types).                                                                                               |
 |              | - `claims`: An object containing the DSP claims of the counterparty as verified by the control plane.                                                                                       |
 | **Optional** | - `dataAddress`: An object containing information about where the provider should push data (provider push). Must be omitted on consumer pull transfers. See [data address](#data-address). |
 |              | - `labels`: an array of strings that represent different flavours of data flow                                                                                                              |
@@ -435,7 +435,7 @@ provider and must be accessed by the provider data plane using an API Key:
   "agreementId": "test-agreement-id",
   "datasetId": "asset-id",
   "callbackAddress": "https://example.com/provider/callback",
-  "transferType": "https://w3id.org/dspace-sig/profile/http-pull",
+  "profile": "https://w3id.org/dspace-sig/profile/http-pull",
   "claims": {
     "membership": "active",
     "sub": "subject"
@@ -754,7 +754,7 @@ The data plane registration message object contains the following properties:
 | **Schema**   | [JSON Schema](./schemas/DataPlaneRegistrationMessage.schema.json)                                   |
 | **Required** | - `dataplaneId`: the data plane id                                                                  |
 |              | - `endpoint`: The data plane signaling endpoint.                                                    |
-|              | - `transferTypes`: An array of one or more strings corresponding to supported transfer types.       |
+|              | - `profiles`: An array of one or more strings corresponding to supported transfer profiles.        |
 | **Optional** | - `authorization`: an authorization object.                                                         |
 |              | - `labels`: an array of one or more strings corresponding to labels associated with the data plane. |
 
@@ -764,7 +764,7 @@ The following is a non-normative example of a Data Plane registration data objec
 {
   "dataplaneId": "7d6fda82-98b6-4738-a874-1f2c003a79ff",
   "endpoint": "https://example.com/signaling",
-  "transferTypes": [
+  "profiles": [
     "https://w3id.org/dspace-sig/profile/http-pull"
   ],
   "authorization": {
@@ -777,10 +777,10 @@ The following is a non-normative example of a Data Plane registration data objec
 }
 ```
 
-##### Transfer Types
+##### Transfer Profiles
 
-Note that standardization of the transfer types is not in the scope of this specification. Dataspaces may define
-specific transfer types.
+Note that standardization of the transfer profiles is not in the scope of this specification. Dataspaces may define
+specific transfer profiles.
 
 ##### Authorization Object
 
@@ -1208,27 +1208,27 @@ sequenceDiagram
     receiver ->> sender: Response
 ```
 
-## Transfer Type Profile Registry
+## Transfer Profile Registry
 
-A **Transfer Type Profile** is the normative specification of a particular kind of data transfer supported by a
+A **Transfer Profile** is the normative specification of a particular kind of data transfer supported by a
 [=Data Plane=]. It identifies a wire-protocol endpoint type, the transfer direction (s) it supports (push, pull, or
-both), and the message contents required to drive those transfers. Transfer Type Profiles are advertised by data planes
-during [registration](#data-plane-registration) via the `transferTypes` property, and referenced from
-`DataFlowPrepareMessage` and `DataFlowStartMessage` via the `transferType` property.
+both), and the message contents required to drive those transfers. Transfer Profiles are advertised by data planes
+during [registration](#data-plane-registration) via the `profiles` property, and referenced from
+`DataFlowPrepareMessage` and `DataFlowStartMessage` via the `profile` property.
 
-To ensure interoperability across implementations, every Transfer Type Profile MUST be published in the
+To ensure interoperability across implementations, every Transfer Profile MUST be published in the
 [Endpoint Type Registry](https://github.com/eclipse-dataplane-signaling/endpoint-type-registry). This specification does
-not enumerate Transfer Type Profiles; the registry is the authoritative source.
+not enumerate Transfer Profiles; the registry is the authoritative source.
 
-### Transfer Type Profile Requirements
+### Transfer Profile Requirements
 
-Each Transfer Type Profile MUST:
+Each Transfer Profile MUST:
 
 1. **Be identified by a fully-expanded URL.** Each profile is rooted at a single absolute URL (the **profile URL**)
    under which a human-readable spec document is published.
 
-2. **Declare one or more `transferType` values.** A profile MUST support at least one of the `push` or `pull`
-   directions, and MAY support both. Each supported direction is exposed as a `transferType` value formed by appending
+2. **Declare one or more `profile` values.** A Transfer Profile MUST support at least one of the `push` or `pull`
+   directions, and MAY support both. Each supported direction is exposed as a `profile` value formed by appending
    `-push` or `-pull` to the profile URL.
 
    For example, a profile published at `https://w3id.org/dspace-sig/profile/http` that supports both directions declares
@@ -1237,8 +1237,8 @@ Each Transfer Type Profile MUST:
     - `https://w3id.org/dspace-sig/profile/http-push`
     - `https://w3id.org/dspace-sig/profile/http-pull`
 
-   A `transferType` value MUST be defined by exactly one Transfer Type Profile. Two profiles MUST NOT declare the same
-   `transferType` value. A profile that supports both `push` and `pull` MUST be specified as a single profile; the two
+   A `profile` value MUST be defined by exactly one Transfer Profile. Two Transfer Profiles MUST NOT declare the same
+   `profile` value. A Transfer Profile that supports both `push` and `pull` MUST be specified as a single profile; the two
    directions MUST NOT be split across separate profiles.
 
 3. **Define the `endpointType` and its `DataAddress` schema.** The profile MUST specify which `DataAddress`
@@ -1263,13 +1263,13 @@ Each Transfer Type Profile MUST:
 
 ### Relationship to Best Practices
 
-Non-normative guidance for authoring Transfer Type Profiles — architectural patterns, worked examples, and recommended
+Non-normative guidance for authoring Transfer Profiles — architectural patterns, worked examples, and recommended
 conventions — is published in the
 [Data Plane Signaling Best Practices](https://github.com/eclipse-dataplane-signaling/best-practices) repository. Profile
 authors SHOULD follow that guidance; where it conflicts with this specification, this specification takes precedence.
 
 ### Relationship to the Dataspace Protocol
 
-Transfer Type Profiles defined under this specification provide the `DataAddress` object referenced by DSP
+Transfer Profiles defined under this specification provide the `DataAddress` object referenced by DSP
 `Data Transfer` profiles. DSP-side JSON Schema definitions SHOULD point to the object definitions governed by the
-corresponding DPS Transfer Type Profile rather than redefining them.
+corresponding DPS Transfer Profile rather than redefining them.

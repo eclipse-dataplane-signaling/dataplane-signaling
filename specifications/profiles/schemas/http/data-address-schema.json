@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://w3id.org/dspace-sig/profile/http/data-address-schema.json",
   "title": "HTTP Profile DataAddress",
-  "description": "DataAddress for the HTTP Transfer Type Profile (https://w3id.org/dspace-sig/profile/http). Extends the base DSP DataAddress schema.",
+  "description": "DataAddress for the HTTP Transfer Profile (https://w3id.org/dspace-sig/profile/http). Extends the base DSP DataAddress schema.",
   "allOf": [
     {
       "$ref": "https://w3id.org/dspace/2025/1/transfer/data-address-schema.json"

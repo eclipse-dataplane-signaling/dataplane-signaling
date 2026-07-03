@@ -36,9 +36,9 @@
             "format": "uri",
             "description": "Callback URL as a string"
         },
-        "transferType": {
+        "profile": {
             "type": "string",
-            "description": "the flow transfer type"
+            "description": "the flow transfer profile"
         },
         "claims": {
             "type": "object",
@@ -62,7 +62,7 @@
         "processId",
         "agreementId",
         "datasetId",
-        "transferType",
+        "profile",
         "claims"
     ]
 }
