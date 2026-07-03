@@ -110,6 +110,7 @@ following specifications:
   used to verify the JWT.
 - The `iss` claim is set to the client's `DID`.
 - The `sub` claim is set to the client's `DID`.
+- The `aud` claim is set to the provider's `DID`.
 - A `token` claim contains the access token associated with the refresh token.
 - The JWT is signed using the private key associated with the key material specified by the `kid` header parameter.
 
