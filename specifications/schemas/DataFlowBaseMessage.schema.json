@@ -31,11 +31,6 @@
             "type": "string",
             "description": "Dataset identifier. This should be identical to the @id of the dcat:dataset"
         },
-        "callbackAddress": {
-            "type": "string",
-            "format": "uri",
-            "description": "Callback URL as a string"
-        },
         "profile": {
             "type": "string",
             "description": "the flow transfer profile"
