@@ -1010,9 +1010,7 @@ The following is a non-normative example using a JWKS URI:
 {
   "authorization": {
     "type": "oauth2_token_exchange",
-    "tokenExchangeEndpoint": "https://broker.example.com/token",
-    "issuer": "https://broker.example.com",
-    "jwksUri": "https://broker.example.com/.well-known/jwks.json"
+    "metadataEndpoint": "https://broker.example.com/auth/.well-known/oauth-authorization-server"
   }
 }
 ```
