@@ -326,7 +326,6 @@ machine transitions to PREPARED, the [=Data Plane=] MUST return HTTP 200 OK and 
 |               | - `processId`: The transfer process ID as assigned by the control plane for correlation.                               |
 |               | - `agreementId`: The contract agreement ID that was negotiated by the control plane.                                   |
 |               | - `datasetId`: The ID of the dataset in the DCAT Catalog which is to be transferred.                                   |
-|               | - `callbackAddress`: A URL where the control plane receives callbacks.                                                 |
 |               | - `profile`: The type of data transfer. See [data transfer types](#data-transfer-types).                          |
 |               | - `claims`: An object containing the DSP claims of the counterparty as verified by the control plane.                  |
 | **Optional**: | - `labels`: an array of strings that represent different flavours of data flow                                         |
@@ -343,7 +342,6 @@ The following is a non-normative example of a `DataFlowPrepareMessage`:
   "processId": "test-transfer-process-id",
   "agreementId": "test-agreement-id",
   "datasetId": "asset-id",
-  "callbackAddress": "https://example.com/provider/callback",
   "profile": "https://w3id.org/dspace-sig/profile/s3-push",
   "claims": {
     "membership": "active",
@@ -412,7 +410,6 @@ containing a
 |              | - `processId`: The transfer process ID as assigned by the control plane for correlation.                                                                                                    |
 |              | - `agreementId`: The contract agreement ID that was negotiated by the control plane.                                                                                                        |
 |              | - `datasetId`: The ID of the dataset in the DCAT Catalog which is to be transferred.                                                                                                        |
-|              | - `callbackAddress`: A URL where the control plane receives callbacks.                                                                                                                      |
 |              | - `profile`: The type of data transfer. See [data transfer types](#data-transfer-types).                                                                                               |
 |              | - `claims`: An object containing the DSP claims of the counterparty as verified by the control plane.                                                                                       |
 | **Optional** | - `dataAddress`: An object containing information about where the provider should push data (provider push). Must be omitted on consumer pull transfers. See [data address](#data-address). |
@@ -434,7 +431,6 @@ provider and must be accessed by the provider data plane using an API Key:
   "processId": "test-transfer-process-id",
   "agreementId": "test-agreement-id",
   "datasetId": "asset-id",
-  "callbackAddress": "https://example.com/provider/callback",
   "profile": "https://w3id.org/dspace-sig/profile/http-pull",
   "claims": {
     "membership": "active",
@@ -831,11 +827,12 @@ Control Plane registration is the process where a [=Control Plane=] is registere
 
 The control plane registration object contains the following properties:
 
-|              |                                                                      |
-|--------------|----------------------------------------------------------------------|
-| **Schema**   | [JSON Schema](./schemas/ControlPlaneRegistrationMessage.schema.json) |
-| **Required** | - `controlplaneId`: the control plane id                             |
-| **Optional** | - `authorization`: an authorization object.                          |
+|              |                                                                                                                |
+|--------------|----------------------------------------------------------------------------------------------------------------|
+| **Schema**   | [JSON Schema](./schemas/ControlPlaneRegistrationMessage.schema.json)                                           |
+| **Required** | - `controlplaneId`: the control plane id                                                                       |
+|              | - `endpoint`: The base URL of the control plane's Signaling API endpoint where the data plane sends callbacks. |
+| **Optional** | - `authorization`: an authorization object.                                                                    |
 
 The following is a non-normative example of a Control Plane registration data object:
 
