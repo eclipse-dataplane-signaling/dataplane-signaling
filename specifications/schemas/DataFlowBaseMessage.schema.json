@@ -19,9 +19,9 @@
             "type": "string",
             "description": "Context identifier of the dataspace"
         },
-        "processId": {
+        "dataFlowId": {
             "type": "string",
-            "description": "Associated process identifier. This should be the transfer process ID."
+            "description": "The data flow identifier. This MUST equal the transfer process ID assigned by the control plane."
         },
         "agreementId": {
             "type": "string",
@@ -54,7 +54,7 @@
         "participantId",
         "counterPartyId",
         "dataspaceContext",
-        "processId",
+        "dataFlowId",
         "agreementId",
         "datasetId",
         "profile",

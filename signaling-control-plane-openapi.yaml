@@ -21,7 +21,7 @@ tags:
     description: Data plane registration endpoints, to be implemented by the control plane. Note that these endpoints are OPTIONAL, but either NONE or ALL must be implemented.
 paths:
 
-  /transfers/{transferId}/dataflow/prepared:
+  /transfers/{dataFlowId}/dataflow/prepared:
     post:
       tags:
         - Control plane endpoints
@@ -30,10 +30,10 @@ paths:
         The prepared request signals to the control plane that the data plane is in the PREPARED state and ready to start a data transfer
       operationId: signalPrepared
       parameters:
-        - name: transferId
+        - name: dataFlowId
           in: path
           required: true
-          description: the unique identifier of the data transfer (= data flow)
+          description: the unique identifier of the data flow, which corresponds to the transfer process ID assigned by the control plane
           schema:
             type: string
             example: 93a78371-7891-495e-afb5-9b11ac6b1e94
@@ -55,7 +55,7 @@ paths:
         '404':
           description: Not Found - transfer process with specified ID does not exist
 
-  /transfers/{transferId}/dataflow/started:
+  /transfers/{dataFlowId}/dataflow/started:
     post:
       tags:
         - Control plane endpoints
@@ -64,10 +64,10 @@ paths:
         The started request signals to the control plane that the data plane is in the STARTED state and clients can start transmitting data
       operationId: signalStarted
       parameters:
-        - name: transferId
+        - name: dataFlowId
           in: path
           required: true
-          description: the unique identifier of the data transfer (= data flow)
+          description: the unique identifier of the data flow, which corresponds to the transfer process ID assigned by the control plane
           schema:
             type: string
             example: 93a78371-7891-495e-afb5-9b11ac6b1e94
@@ -89,7 +89,7 @@ paths:
         '404':
           description: Not Found - transfer process with specified ID does not exist
 
-  /transfers/{transferId}/dataflow/completed:
+  /transfers/{dataFlowId}/dataflow/completed:
     post:
       tags:
         - Control plane endpoints
@@ -98,10 +98,10 @@ paths:
         The completed request signals to the control plane that the data plane is in the COMPLETED state and all transmissions have finished normally.
       operationId: signalCompleted
       parameters:
-        - name: transferId
+        - name: dataFlowId
           in: path
           required: true
-          description: the unique identifier of the data transfer (= data flow)
+          description: the unique identifier of the data flow, which corresponds to the transfer process ID assigned by the control plane
           schema:
             type: string
             example: 93a78371-7891-495e-afb5-9b11ac6b1e94
@@ -123,7 +123,7 @@ paths:
         '404':
           description: Not Found - transfer process with specified ID does not exist
 
-  /transfers/{transferId}/dataflow/errored:
+  /transfers/{dataFlowId}/dataflow/errored:
     post:
       tags:
         - Control plane endpoints
@@ -135,10 +135,10 @@ paths:
         or creating a new transfer.
       operationId: signalErrored
       parameters:
-        - name: transferId
+        - name: dataFlowId
           in: path
           required: true
-          description: the unique identifier of the data transfer (= data flow)
+          description: the unique identifier of the data flow, which corresponds to the transfer process ID assigned by the control plane
           schema:
             type: string
             example: 93a78371-7891-495e-afb5-9b11ac6b1e94
@@ -161,7 +161,7 @@ paths:
         '404':
           description: Not Found - transfer process with specified ID does not exist
 
-  /transfers/{transferId}/agreement:
+  /transfers/{dataFlowId}/agreement:
     get:
       tags:
         - Control plane endpoints
@@ -170,10 +170,10 @@ paths:
         Returns the agreement identified by the transfer's `agreementId`.
       operationId: getTransferAgreement
       parameters:
-        - name: transferId
+        - name: dataFlowId
           in: path
           required: true
-          description: the unique identifier of the data transfer (= data flow)
+          description: the unique identifier of the data flow, which corresponds to the transfer process ID assigned by the control plane
           schema:
             type: string
             example: 93a78371-7891-495e-afb5-9b11ac6b1e94

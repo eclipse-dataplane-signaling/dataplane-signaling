@@ -323,10 +323,10 @@ machine transitions to PREPARED, the [=Data Plane=] MUST return HTTP 200 OK and 
 |               | - `participantId`: The participant ID of the sender as specified in the Dataspace Protocol.                            |
 |               | - `counterPartyId`: The participant ID of the counterparty as specified in the Dataspace Protocol.                     |
 |               | - `dataspaceContext`: An identifier for the dataspace context for when the data plane is used in multiple data spaces. |
-|               | - `processId`: The transfer process ID as assigned by the control plane for correlation.                               |
+|               | - `dataFlowId`: The data flow identifier. This MUST equal the transfer process ID assigned by the control plane.       |
 |               | - `agreementId`: The contract agreement ID that was negotiated by the control plane.                                   |
 |               | - `datasetId`: The ID of the dataset in the DCAT Catalog which is to be transferred.                                   |
-|               | - `profile`: The type of data transfer. See [data transfer types](#data-transfer-types).                          |
+|               | - `profile`: The type of data transfer. See [data transfer types](#data-transfer-types).                               |
 |               | - `claims`: An object containing the DSP claims of the counterparty as verified by the control plane.                  |
 | **Optional**: | - `labels`: an array of strings that represent different flavours of data flow                                         |
 |               | - `metadata`: An object containing information that could be used by the data plane during preparation.                |
@@ -339,7 +339,7 @@ The following is a non-normative example of a `DataFlowPrepareMessage`:
   "participantId": "provider-participant-id",
   "counterPartyId": "consumer-participant-id",
   "dataspaceContext": "test-dataspace-context",
-  "processId": "test-transfer-process-id",
+  "dataFlowId": "test-transfer-process-id",
   "agreementId": "test-agreement-id",
   "datasetId": "asset-id",
   "profile": "https://w3id.org/dspace-sig/profile/s3-push",
@@ -365,7 +365,7 @@ The following is a non-normative example of a `DataFlowPrepareMessage`:
 |--------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | **Schema**   | [JSON Schema](./schemas/DataFlowStatusMessage.schema.json)                                                                          |
 | **Required** | - `messageId`: A unique identifier for the message.                                                                                 |
-|              | - `dataFlowId`: The unique identifier of the data flow.                                                                             |
+|              | - `dataFlowId`: The unique identifier of the data flow. This MUST equal the `dataFlowId` from the originating request message.      |
 |              | - `state`: The current state of the data flow.                                                                                      |
 | **Optional** | - `dataAddress`: An object containing information about where the data can be obtained/provided. See [data address](#data-address). |
 |              | - `error`: A description of any error that occurred during processing.                                                              |
@@ -407,16 +407,16 @@ containing a
 |              | - `participantId`: The participant ID of the sender as specified in the Dataspace Protocol.                                                                                                 |
 |              | - `counterPartyId`: The participant ID of the counterparty as specified in the Dataspace Protocol.                                                                                          |
 |              | - `dataspaceContext`: An identifier for the dataspace context for when the data plane is used in multiple data spaces.                                                                      |
-|              | - `processId`: The transfer process ID as assigned by the control plane for correlation.                                                                                                    |
+|              | - `dataFlowId`: The data flow identifier. This MUST equal the transfer process ID assigned by the control plane.                                                                            |
 |              | - `agreementId`: The contract agreement ID that was negotiated by the control plane.                                                                                                        |
 |              | - `datasetId`: The ID of the dataset in the DCAT Catalog which is to be transferred.                                                                                                        |
-|              | - `profile`: The type of data transfer. See [data transfer types](#data-transfer-types).                                                                                               |
+|              | - `profile`: The type of data transfer. See [data transfer types](#data-transfer-types).                                                                                                    |
 |              | - `claims`: An object containing the DSP claims of the counterparty as verified by the control plane.                                                                                       |
 | **Optional** | - `dataAddress`: An object containing information about where the provider should push data (provider push). Must be omitted on consumer pull transfers. See [data address](#data-address). |
 |              | - `labels`: an array of strings that represent different flavours of data flow                                                                                                              |
 |              | - `metadata`: An object containing information that could be used by the data plane during startup.                                                                                         |
 
-If a data flow already exists for a particular `processId` the [=Data Plane=] MUST respond with HTTP 4xx Client Error.
+If a data flow already exists for a particular `dataFlowId` the [=Data Plane=] MUST respond with HTTP 4xx Client Error.
 For consumer pull transfers, supplying a data address with the `/start` signal MUST result in a HTTP 4xx Client Error.
 
 The following is a non-normative example of a `DataFlowStartMessage` where the data is located in an internal API of the
@@ -428,7 +428,7 @@ provider and must be accessed by the provider data plane using an API Key:
   "participantId": "provider-participant-id",
   "counterPartyId": "consumer-participant-id",
   "dataspaceContext": "test-dataspace-context",
-  "processId": "test-transfer-process-id",
+  "dataFlowId": "test-transfer-process-id",
   "agreementId": "test-agreement-id",
   "datasetId": "asset-id",
   "profile": "https://w3id.org/dspace-sig/profile/http-pull",
@@ -643,6 +643,9 @@ The following is a non-normative example of a `DataFlowStatusResponseMessage`:
 
 The Control Plane Endpoint is used by the [=Data Plane=] to make state transition callbacks.
 
+The `:dataFlowId` path parameter in all Control Plane Endpoint URLs MUST equal the `dataFlowId` supplied in the
+originating `DataFlowPrepareMessage` or `DataFlowStartMessage`.
+
 #### Prepared
 
 The `prepared` request signals to the [=Control Plane=] that the [=Data Flow=] is in the PREPARED state.
@@ -650,7 +653,7 @@ The `prepared` request signals to the [=Control Plane=] that the [=Data Flow=] i
 |                 |                                                   |
 |-----------------|---------------------------------------------------|
 | **HTTP Method** | `POST`                                            |
-| **URL Path**    | `/transfers/:transferId/dataflow/prepared`        |
+| **URL Path**    | `/transfers/:dataFlowId/dataflow/prepared`        |
 | **Request**     | [`DataFlowStatusMessage`](#dataflowstatusmessage) |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`             |
 
@@ -661,7 +664,7 @@ The `started` request signals to the [=Control Plane=] that the [=Data Flow=] is
 |                 |                                                   |
 |-----------------|---------------------------------------------------|
 | **HTTP Method** | `POST`                                            |
-| **URL Path**    | `/transfers/:transferId/dataflow/started`         |
+| **URL Path**    | `/transfers/:dataFlowId/dataflow/started`         |
 | **Request**     | [`DataFlowStatusMessage`](#dataflowstatusmessage) |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`             |
 
@@ -672,7 +675,7 @@ The `completed` request signals to the [=Control Plane=] that the [=Data Flow=] 
 |                 |                                                   |
 |-----------------|---------------------------------------------------|
 | **HTTP Method** | `POST`                                            |
-| **URL Path**    | `/transfers/:transferId/dataflow/completed`       |
+| **URL Path**    | `/transfers/:dataFlowId/dataflow/completed`       |
 | **Request**     | [`DataFlowStatusMessage`](#dataflowstatusmessage) |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`             |
 
@@ -698,7 +701,7 @@ close is not.
 |                 |                                           |
 |-----------------|-------------------------------------------|
 | **HTTP Method** | `POST`                                    |
-| **URL Path**    | `/transfers/:transferId/dataflow/errored` |
+| **URL Path**    | `/transfers/:dataFlowId/dataflow/errored` |
 | **Request**     | [`DataFlowStatusMessage`]                 |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`     |
 
@@ -709,7 +712,7 @@ The [=Data Plane=] MAY request the [=Control Plane=] for the agreement that is a
 |                 |                                                                                       |
 |-----------------|---------------------------------------------------------------------------------------|
 | **HTTP Method** | `GET`                                                                                 |
-| **URL Path**    | `/transfers/:transferId/agreement`                                                    |
+| **URL Path**    | `/transfers/:dataFlowId/agreement`                                                    |
 | **Request**     |                                                                                       |
 | **Response**    | `HTTP 200` with an [AgreementResponse](#agreementresponse) OR `HTTP 4xx Client Error` |
 
@@ -750,7 +753,7 @@ The data plane registration message object contains the following properties:
 | **Schema**   | [JSON Schema](./schemas/DataPlaneRegistrationMessage.schema.json)                                   |
 | **Required** | - `dataplaneId`: the data plane id                                                                  |
 |              | - `endpoint`: The data plane signaling endpoint.                                                    |
-|              | - `profiles`: An array of one or more strings corresponding to supported transfer profiles.        |
+|              | - `profiles`: An array of one or more strings corresponding to supported transfer profiles.         |
 | **Optional** | - `authorization`: an authorization object.                                                         |
 |              | - `labels`: an array of one or more strings corresponding to labels associated with the data plane. |
 
