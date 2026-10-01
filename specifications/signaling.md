@@ -322,7 +322,7 @@ machine transitions to PREPARED, the [=Data Plane=] MUST return HTTP 200 OK and 
 | **Required**  | - `messageId`: A unique identifier for the message.                                                                    |
 |               | - `participantId`: The participant ID of the sender as specified in the Dataspace Protocol.                            |
 |               | - `counterPartyId`: The participant ID of the counterparty as specified in the Dataspace Protocol.                     |
-|               | - `dataspaceContext`: An identifier for the dataspace context for when the data plane is used in multiple data spaces. |
+|               | - `dataspaceContext`: An identifier for the dataspace context for when the data plane is used in multiple dataspaces. |
 |               | - `dataFlowId`: The data flow identifier. This MUST equal the transfer process ID assigned by the control plane.       |
 |               | - `agreementId`: The contract agreement ID that was negotiated by the control plane.                                   |
 |               | - `datasetId`: The ID of the dataset in the DCAT Catalog which is to be transferred.                                   |
@@ -406,7 +406,7 @@ containing a
 | **Required** | - `messageId`: A unique identifier for the message.                                                                                                                                         |
 |              | - `participantId`: The participant ID of the sender as specified in the Dataspace Protocol.                                                                                                 |
 |              | - `counterPartyId`: The participant ID of the counterparty as specified in the Dataspace Protocol.                                                                                          |
-|              | - `dataspaceContext`: An identifier for the dataspace context for when the data plane is used in multiple data spaces.                                                                      |
+|              | - `dataspaceContext`: An identifier for the dataspace context for when the data plane is used in multiple dataspaces.                                                                      |
 |              | - `dataFlowId`: The data flow identifier. This MUST equal the transfer process ID assigned by the control plane.                                                                            |
 |              | - `agreementId`: The contract agreement ID that was negotiated by the control plane.                                                                                                        |
 |              | - `datasetId`: The ID of the dataset in the DCAT Catalog which is to be transferred.                                                                                                        |
