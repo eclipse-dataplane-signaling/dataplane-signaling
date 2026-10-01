@@ -872,7 +872,7 @@ A [=Data Plane=] implementation MAY support registration through an endpoint. Th
 | **Request**     | [`ControlPlaneRegistrationMessage`](#the-control-plane-registration-type)   |
 | **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`                                       |
 
-The `ControlPlaneRegistrationMessage` adheres to the [Registration type](#the-control-plane-registration-type)structure.
+The `ControlPlaneRegistrationMessage` adheres to the [Registration type](#the-control-plane-registration-type) structure.
 The endpoint MAY require an authorization mechanism such as OAuth 2.0 or API Key. This is implementation-specific.
 
 Note that the endpoint is relative and may include additional context information, such as a subpath indicating the
