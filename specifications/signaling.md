@@ -328,7 +328,7 @@ machine transitions to PREPARED, the [=Data Plane=] MUST return HTTP 200 OK and 
 |               | - `datasetId`: The ID of the dataset in the DCAT Catalog which is to be transferred.                                   |
 |               | - `profile`: The type of data transfer. See [data transfer types](#data-transfer-types).                               |
 |               | - `claims`: An object containing the DSP claims of the counterparty as verified by the control plane.                  |
-| **Optional**: | - `labels`: an array of strings that represent different flavours of data flow                                         |
+| **Optional**  | - `labels`: an array of strings that represent different flavours of data flow                                         |
 |               | - `metadata`: An object containing information that could be used by the data plane during preparation.                |
 
 The following is a non-normative example of a `DataFlowPrepareMessage`:
