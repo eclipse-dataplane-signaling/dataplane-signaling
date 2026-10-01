@@ -698,12 +698,12 @@ TERMINATED. [=Wire Protocol=] specifications MUST define what constitutes abnorm
 close without a prior terminated message may be interpreted as an error, while a terminated message followed by a socket
 close is not.
 
-|                 |                                           |
-|-----------------|-------------------------------------------|
-| **HTTP Method** | `POST`                                    |
-| **URL Path**    | `/transfers/:dataFlowId/dataflow/errored` |
-| **Request**     | [`DataFlowStatusMessage`]                 |
-| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`     |
+|                 |                                                  |
+|-----------------|--------------------------------------------------|
+| **HTTP Method** | `POST`                                           |
+| **URL Path**    | `/transfers/:dataFlowId/dataflow/errored`        |
+| **Request**     | [`DataFlowStatusMessage`](#dataflowstatusmessage)|
+| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`            |
 
 #### Agreement retrieval
 
@@ -796,12 +796,12 @@ configuration is applied is implementation-specific.
 
 A [=Control Plane=] implementation MAY support registration through an endpoint. The endpoint is defined as follows:
 
-|                 |                                       |
-|-----------------|---------------------------------------|
-| **HTTP Method** | `PUT`                                 |
-| **URL Path**    | `/dataplanes`                         |
-| **Request**     | [`DataPlaneRegistrationMessage`]      |
-| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error` |
+|                 |                                                                         |
+|-----------------|-------------------------------------------------------------------------|
+| **HTTP Method** | `PUT`                                                                   |
+| **URL Path**    | `/dataplanes`                                                           |
+| **Request**     | [`DataPlaneRegistrationMessage`](#the-data-plane-registration-message)  |
+| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`                                   |
 
 The `DataPlaneRegistrationMessage` adheres to the [Registration type](#the-data-plane-registration-message)
 structure. The endpoint MAY require an authorization mechanism such as OAuth 2.0 or API Key. This is
@@ -865,12 +865,12 @@ is applied is implementation-specific.
 
 A [=Data Plane=] implementation MAY support registration through an endpoint. The endpoint is defined as follows:
 
-|                 |                                       |
-|-----------------|---------------------------------------|
-| **HTTP Method** | `PUT`                                 |
-| **URL Path**    | `/controlplanes`                      |
-| **Request**     | [`ControlPlaneRegistrationMessage`]   |
-| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error` |
+|                 |                                                                             |
+|-----------------|-----------------------------------------------------------------------------|
+| **HTTP Method** | `PUT`                                                                       |
+| **URL Path**    | `/controlplanes`                                                            |
+| **Request**     | [`ControlPlaneRegistrationMessage`](#the-control-plane-registration-type)   |
+| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`                                       |
 
 The `ControlPlaneRegistrationMessage` adheres to the [Registration type](#the-control-plane-registration-type)structure.
 The endpoint MAY require an authorization mechanism such as OAuth 2.0 or API Key. This is implementation-specific.
