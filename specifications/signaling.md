@@ -9,7 +9,7 @@ that can be combined to meet the requirements of different dataspace use cases.
 The following terms are used to describe concepts in this specification.
 
 - <dfn>Connector</dfn>: Software services that manage the exchange of data between a provider and consumer as defined by
-  the DSP Specification.
+  the DSP Specification [[dsp-base]].
 - <dfn>Control Plane</dfn>: The [=Connector=] services that implement the DSP protocol.
 - <dfn>Data Flow</dfn>: The exchange of data belonging to a [=Dataset=] between a provider and consumer [=Data Plane=].
 - <dfn>Data Plane</dfn>: The [=Connector=] services that implement a [=Data Flow=] using a [=Wire Protocol=].
@@ -22,7 +22,7 @@ The following terms are used to describe concepts in this specification.
 ## Base Concepts
 
 The DSP Specification models consumer access to a provider dataset in the [=Control Plane=] as
-a [=Transfer Process=](https://eclipse-dataspace-protocol-base.github.io/DataspaceProtocol/2025-1/#dfn-transfer-process).
+a [=Transfer Process=].
 The
 [=Wire Protocol=] operations in the [=Data Plane=] that facilitate data exchange are modeled as a [=Data Flow=]. A
 [=Data Flow=] represents the current state of the physical data transfer.
@@ -328,7 +328,7 @@ machine transitions to PREPARED, the [=Data Plane=] MUST return HTTP 200 OK and 
 |               | - `datasetId`: The ID of the dataset in the DCAT Catalog which is to be transferred.                                   |
 |               | - `profile`: The type of data transfer. See [data transfer types](#data-transfer-types).                               |
 |               | - `claims`: An object containing the DSP claims of the counterparty as verified by the control plane.                  |
-| **Optional**: | - `labels`: an array of strings that represent different flavours of data flow                                         |
+| **Optional**  | - `labels`: an array of strings that represent different flavours of data flow                                         |
 |               | - `metadata`: An object containing information that could be used by the data plane during preparation.                |
 
 The following is a non-normative example of a `DataFlowPrepareMessage`:
@@ -698,12 +698,12 @@ TERMINATED. [=Wire Protocol=] specifications MUST define what constitutes abnorm
 close without a prior terminated message may be interpreted as an error, while a terminated message followed by a socket
 close is not.
 
-|                 |                                           |
-|-----------------|-------------------------------------------|
-| **HTTP Method** | `POST`                                    |
-| **URL Path**    | `/transfers/:dataFlowId/dataflow/errored` |
-| **Request**     | [`DataFlowStatusMessage`]                 |
-| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`     |
+|                 |                                                  |
+|-----------------|--------------------------------------------------|
+| **HTTP Method** | `POST`                                           |
+| **URL Path**    | `/transfers/:dataFlowId/dataflow/errored`        |
+| **Request**     | [`DataFlowStatusMessage`](#dataflowstatusmessage)|
+| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`            |
 
 #### Agreement retrieval
 
@@ -796,12 +796,12 @@ configuration is applied is implementation-specific.
 
 A [=Control Plane=] implementation MAY support registration through an endpoint. The endpoint is defined as follows:
 
-|                 |                                       |
-|-----------------|---------------------------------------|
-| **HTTP Method** | `PUT`                                 |
-| **URL Path**    | `/dataplanes`                         |
-| **Request**     | [`DataPlaneRegistrationMessage`]      |
-| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error` |
+|                 |                                                                         |
+|-----------------|-------------------------------------------------------------------------|
+| **HTTP Method** | `PUT`                                                                   |
+| **URL Path**    | `/dataplanes`                                                           |
+| **Request**     | [`DataPlaneRegistrationMessage`](#the-data-plane-registration-message)  |
+| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`                                   |
 
 The `DataPlaneRegistrationMessage` adheres to the [Registration type](#the-data-plane-registration-message)
 structure. The endpoint MAY require an authorization mechanism such as OAuth 2.0 or API Key. This is
@@ -865,14 +865,14 @@ is applied is implementation-specific.
 
 A [=Data Plane=] implementation MAY support registration through an endpoint. The endpoint is defined as follows:
 
-|                 |                                       |
-|-----------------|---------------------------------------|
-| **HTTP Method** | `PUT`                                 |
-| **URL Path**    | `/controlplanes`                      |
-| **Request**     | [`ControlPlaneRegistrationMessage`]   |
-| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error` |
+|                 |                                                                             |
+|-----------------|-----------------------------------------------------------------------------|
+| **HTTP Method** | `PUT`                                                                       |
+| **URL Path**    | `/controlplanes`                                                            |
+| **Request**     | [`ControlPlaneRegistrationMessage`](#the-control-plane-registration-type)   |
+| **Response**    | `HTTP 200` OR `HTTP 4xx Client Error`                                       |
 
-The `ControlPlaneRegistrationMessage` adheres to the [Registration type](#the-control-plane-registration-type)structure.
+The `ControlPlaneRegistrationMessage` adheres to the [Registration type](#the-control-plane-registration-type) structure.
 The endpoint MAY require an authorization mechanism such as OAuth 2.0 or API Key. This is implementation-specific.
 
 Note that the endpoint is relative and may include additional context information, such as a subpath indicating the
