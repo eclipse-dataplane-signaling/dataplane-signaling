@@ -22,7 +22,7 @@ The following terms are used to describe concepts in this specification.
 ## Base Concepts
 
 The DSP Specification models consumer access to a provider dataset in the [=Control Plane=] as
-a [=Transfer Process=](https://eclipse-dataspace-protocol-base.github.io/DataspaceProtocol/2025-1/#dfn-transfer-process).
+a [=Transfer Process=].
 The
 [=Wire Protocol=] operations in the [=Data Plane=] that facilitate data exchange are modeled as a [=Data Flow=]. A
 [=Data Flow=] represents the current state of the physical data transfer.
