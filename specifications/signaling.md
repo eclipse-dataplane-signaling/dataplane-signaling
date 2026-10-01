@@ -9,7 +9,7 @@ that can be combined to meet the requirements of different dataspace use cases.
 The following terms are used to describe concepts in this specification.
 
 - <dfn>Connector</dfn>: Software services that manage the exchange of data between a provider and consumer as defined by
-  the DSP Specification.
+  the DSP Specification [[dsp-base]].
 - <dfn>Control Plane</dfn>: The [=Connector=] services that implement the DSP protocol.
 - <dfn>Data Flow</dfn>: The exchange of data belonging to a [=Dataset=] between a provider and consumer [=Data Plane=].
 - <dfn>Data Plane</dfn>: The [=Connector=] services that implement a [=Data Flow=] using a [=Wire Protocol=].
