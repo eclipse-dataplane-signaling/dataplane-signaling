@@ -132,14 +132,17 @@ following is a non-normative example of a `DataAddress`:
 
 ```json
 {
+  "@type": "DataAddress",
   "endpointType": "https://w3id.org/idsa/v4.1/HTTP",
   "endpoint": "https://example.com",
   "endpointProperties": [
     {
+      "@type": "EndpointProperty",
       "name": "authorization",
       "value": "TOKEN-123"
     },
     {
+      "@type": "EndpointProperty",
       "name": "authType",
       "value": "bearer"
     }
@@ -376,7 +379,6 @@ The following is a non-normative example of a `DataFlowStatusMessage`:
 {
   "messageId": "b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a",
   "dataFlowId": "dataFlow-123",
-  "dataAddress": {},
   "state": "PREPARED",
   "error": ""
 }
@@ -437,14 +439,17 @@ provider and must be accessed by the provider data plane using an API Key:
     "sub": "subject"
   },
   "dataAddress": {
+    "@type": "DataAddress",
     "endpointType": "https://w3id.org/idsa/v4.1/HTTP",
     "endpoint": "http://dataplane.provider.com/api/public",
     "endpointProperties": [
       {
+        "@type": "EndpointProperty",
         "name": "authorization",
         "value": "<AUTH_TOKEN>"
       },
       {
+        "@type": "EndpointProperty",
         "name": "authType",
         "value": "bearer"
       }
@@ -492,14 +497,17 @@ The following is a non-normative example of a `DataFlowStartedNotificationMessag
 {
   "messageId": "b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a",
   "dataAddress": {
+    "@type": "DataAddress",
     "endpointType": "https://w3id.org/idsa/v4.1/HTTP",
     "endpoint": "http://dataplane.provider.com/api/public",
     "endpointProperties": [
       {
+        "@type": "EndpointProperty",
         "name": "authorization",
         "value": "<AUTH_TOKEN>"
       },
       {
+        "@type": "EndpointProperty",
         "name": "authType",
         "value": "bearer"
       }
@@ -564,8 +572,7 @@ The following is a non-normative example of a `DataFlowResumeMessage`:
 
 ```json
 {
-  "messageId": "b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a",
-  "dataAddress": {}
+  "messageId": "b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a"
 }
 ```
 
