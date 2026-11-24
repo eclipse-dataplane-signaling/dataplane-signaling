@@ -136,12 +136,15 @@ paths:
                 messageId: b1d5f9e2-3c4b-4f7a-9c3e-2f1e5d6c7b8a
                 state: STARTED
                 dataAddress:
-                  endpointType: https://23id.org.idsa/v4.1/HTTP
+                  '@type': DataAddress
+                  endpointType: https://w3id.org/idsa/v4.1/HTTP
                   endpoint: https://example.com/api/data
                   endpointProperties:
-                    - name: authorization
+                    - '@type': EndpointProperty
+                      name: authorization
                       value: 5up3r53cur3t0k3n
-                    - name: authType
+                    - '@type': EndpointProperty
+                      name: authType
                       value: bearer
         '202':
           description: Start request received, DataFlow is being started
