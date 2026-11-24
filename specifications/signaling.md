@@ -421,8 +421,8 @@ containing a
 If a data flow already exists for a particular `dataFlowId` the [=Data Plane=] MUST respond with HTTP 4xx Client Error.
 For consumer pull transfers, supplying a data address with the `/start` signal MUST result in a HTTP 4xx Client Error.
 
-The following is a non-normative example of a `DataFlowStartMessage` where the data is located in an internal API of the
-provider and must be accessed by the provider data plane using an API Key:
+The following is a non-normative example of a `DataFlowStartMessage` for a provider push transfer, where the provider
+[=Data Plane=] must push data to an HTTP endpoint supplied by the consumer, using a bearer token:
 
 ```json
 {
@@ -433,7 +433,7 @@ provider and must be accessed by the provider data plane using an API Key:
   "dataFlowId": "test-transfer-process-id",
   "agreementId": "test-agreement-id",
   "datasetId": "asset-id",
-  "profile": "https://w3id.org/dspace-sig/profile/http-pull",
+  "profile": "https://w3id.org/dspace-sig/profile/http-push",
   "claims": {
     "membership": "active",
     "sub": "subject"
@@ -441,7 +441,7 @@ provider and must be accessed by the provider data plane using an API Key:
   "dataAddress": {
     "@type": "DataAddress",
     "endpointType": "https://w3id.org/idsa/v4.1/HTTP",
-    "endpoint": "http://dataplane.provider.com/api/public",
+    "endpoint": "http://dataplane.consumer.com/api/receive",
     "endpointProperties": [
       {
         "@type": "EndpointProperty",
